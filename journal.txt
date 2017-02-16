@@ -15,3 +15,9 @@ Using the following references (in order of precedence):
  - Software Foundations, Benjamin Pierce, https://www.cis.upenn.edu/~bcpierce/sf/current/index.html
  - Coq Official tutorial, Huet, Kahn and Paulin, https://coq.inria.fr/distrib/V8.6/files/Tutorial.pdf
  - Coq in a hurry, Yves Bertot, https://cel.archives-ouvertes.fr/inria-00001173v5/document
+
+2017-02-15 19:57 Installing Coq successful.
+
+> coqc -v
+>  The Coq Proof Assistant, version 8.6 (February 2017)
+>  compiled on Feb 15 2017 19:45:37 with OCaml 4.02.3
