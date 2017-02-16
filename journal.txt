@@ -3,3 +3,15 @@ Starting CS project under Prof Stephen Edwards @Columbia. This is going to be a 
 
 2017-02-15 19:34 Installing Coq.
 Seems rather simple to just use apt's version but to keep things consistent, I'm going to build version 8.6 (latest as of now) from sources.
+
+2017-02-15 19:49 Stages of project.
+Stage 1: Learn Coq, since I'm a complete beginner
+Stage 2: Read, understand and dissect the paper in question
+Stage 3: Implement a formal of proof of the required section
+
+2017-02-15 19:52 Learning Coq.
+Using the following references (in order of precedence):
+
+ - Software Foundations, Benjamin Pierce, https://www.cis.upenn.edu/~bcpierce/sf/current/index.html
+ - Coq Official tutorial, Huet, Kahn and Paulin, https://coq.inria.fr/distrib/V8.6/files/Tutorial.pdf
+ - Coq in a hurry, Yves Bertot, https://cel.archives-ouvertes.fr/inria-00001173v5/document
