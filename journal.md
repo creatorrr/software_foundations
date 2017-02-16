@@ -21,3 +21,5 @@ Using the following references (in order of precedence):
 > coqc -v
 >  The Coq Proof Assistant, version 8.6 (February 2017)
 >  compiled on Feb 15 2017 19:45:37 with OCaml 4.02.3
+
+2017-02-15 19:59 Changing journal format to markdown.
