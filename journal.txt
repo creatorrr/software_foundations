@@ -1,2 +1,5 @@
 2017-02-15 19:30 Init.
 Starting CS project under Prof Stephen Edwards @Columbia. This is going to be a log of thoughts and notes I make during the project.
+
+2017-02-15 19:34 Installing Coq.
+Seems rather simple to just use apt's version but to keep things consistent, I'm going to build version 8.6 (latest as of now) from sources.
