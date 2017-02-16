@@ -23,3 +23,16 @@ Using the following references (in order of precedence):
 >  compiled on Feb 15 2017 19:45:37 with OCaml 4.02.3
 
 2017-02-15 19:59 Changing journal format to markdown.
+
+2017-02-16 10:43 Hate CoqIDE.
+Trying to install a vim plugin that emulates coqIDE called [coquille](https://github.com/the-lambda-church/coquille) but running into problems with my vim install (it only has Python3 support but the plugin needs python2 support). Jesus Christ! Pythoners, get your #$%# together already.
+
+2017-02-16 10:47 
+
+2017-02-16 11:13 Coq works with vim now.
+Yay! I had to re-add te vim 8.x ppa and reinstall with python2-only support. I'd much rather prefer to re-compile vim with dynamic python2/3 support but I'm too lazy... Anyway, good news is the setup works now so adios coqIDE.
+
+2017-02-16 11:17 Coquille vimrc settings.
+
+> let g:coquille_auto_move="true"
+> au FileType coq call coquille#CoqideMapping()

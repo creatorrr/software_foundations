@@ -22,3 +22,10 @@ Resources for learning
 - [Coq Official tutorial, Huet, Kahn and Paulin](https://coq.inria.fr/distrib/V8.6/files/Tutorial.pdf)
 - [Coq in a hurry, Yves Bertot](https://cel.archives-ouvertes.fr/inria-00001173v5/document)
 
+
+Tools
+-----
+
+### Coq
+
+- [coquille - a vim coqIDE emulator](https://github.com/the-lambda-church/coquille)
