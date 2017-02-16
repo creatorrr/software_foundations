@@ -1,0 +1,2 @@
+2017-02-15 19:30 Init.
+Starting CS project under Prof Stephen Edwards @Columbia. This is going to be a log of thoughts and notes I make during the project.
