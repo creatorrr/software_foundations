@@ -36,3 +36,9 @@ Yay! I had to re-add te vim 8.x ppa and reinstall with python2-only support. I'd
 
 > let g:coquille_auto_move="true"
 > au FileType coq call coquille#CoqideMapping()
+
+2017-02-16 11:39 #$#%@ing vim.
+Now my vim doesn't have clipboard support. Great. Gotta recompile from sources I guess. -_-"
+
+2017-02-16 11:47 %##$ing Coquille.
+So apparently, coquille only works for Coq ver <= 8.4 FML. Looking at other options and reinstating my previous vim setup.

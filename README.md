@@ -28,4 +28,4 @@ Tools
 
 ### Coq
 
-- [coquille - a vim coqIDE emulator](https://github.com/the-lambda-church/coquille)
+- ~~[coquille - a vim coqIDE emulator](https://github.com/the-lambda-church/coquille)~~ Works for Coq v 8.4 and below only.
