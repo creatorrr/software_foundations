@@ -42,3 +42,19 @@ Now my vim doesn't have clipboard support. Great. Gotta recompile from sources I
 
 2017-02-16 11:47 %##$ing Coquille.
 So apparently, coquille only works for Coq ver <= 8.4 FML. Looking at other options and reinstating my previous vim setup.
+
+2017-02-16 16:28 Learnign emacs.
+After much tinkering with coq options for vim or neovim, it doesn't seem like a feasible environment to work in. I still hate coqIDE enough to not use it despite that so we are left with two options:
+
+ - Patch coquille to work with later Coq versions which for reasons mentioned [here](https://github.com/the-lambda-church/coquille/issues/31) are non-trivial. Also, since coquille wasn't written with the new async process model of vim8.x, it's probably going to be a complete rewrite.
+
+ - Suck it up and learn emacs. I have decided to go with this option because:
+   1. I have always wanted to learn emacs but never had sufficient motivation.
+   2. This is going to be helpful in going o using Agda and the like.
+   3. I'm a natural lisper.
+
+2017-02-16 17:08 My emacs setup.
+Currently starting with **evil-mode**, obviously. A mix of my own tweaks, [this](https://blog.aaronbieber.com/2015/05/24/from-vim-to-emacs-in-fourteen-days.html) and [this](https://juanjoalvarez.net/es/detail/2014/sep/19/vim-emacsevil-chaotic-migration-guide/).
+
+2017-02-16 17:09 Emacs baby steps.
+Still struggling but I am actually beginning to like it. Maybe it was for the better...
