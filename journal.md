@@ -58,3 +58,6 @@ Currently starting with **evil-mode**, obviously. A mix of my own tweaks, [this]
 
 2017-02-16 17:09 Emacs baby steps.
 Still struggling but I am actually beginning to like it. Maybe it was for the better...
+
+2017-02-17 16:51 Installed proof-general.
+Had fun with installing a bunch of emacs packages and installed and tried proof-general for the first time. Still trying to get a good hang of things but seems to work like a breeze so far.
