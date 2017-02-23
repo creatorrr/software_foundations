@@ -64,3 +64,9 @@ Had fun with installing a bunch of emacs packages and installed and tried proof-
 
 2017-02-23 16:42 Back to work.
 After a brief relapse into days of self-pity, I am back to work. Still having some trouble with my emacs setup but I am getting the hang of it. Made some new modifications to fix company-coq mucking up and things are working. For now.
+
+2017-02-23 17:16 Starting Coq in a Hurry.
+Doing the short tutorial along with exercise solutions.
+
+2017-02-23 18:49 Section 2 done.
+Finished sec 2 of Coq in a hurry.
