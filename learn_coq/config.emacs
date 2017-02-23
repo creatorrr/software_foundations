@@ -17,10 +17,28 @@
                                    ("milkbox-melpa-stable" . 3)
                                    ("melpa" . 2)
                                    ("gnu" . 1)
-                                   ("marmalade" . 0)))
+                                   ("marmalade" . 0)
+                                   ))
 
 (setq package-enable-at-startup nil)
 (package-initialize)
+
+;; Utils
+;; -----
+
+(defun setup-coq-keys ()
+  (evil-define-key 'normal coq-mode-map
+                   (kbd "M-l") 'proof-goto-point
+                   (kbd "M-k") 'proof-undo-last-successful-command
+                   (kbd "M-j") 'proof-assert-next-command-interactive
+                   )
+  (evil-define-key 'insert coq-mode-map
+                   (kbd "M-l") 'proof-goto-point
+                   (kbd "M-k") 'proof-undo-last-successful-command
+                   (kbd "M-j") 'proof-assert-next-command-interactive
+                   )
+  )
+
 
 ;; use-package init
 ;; --------------------
@@ -37,6 +55,8 @@
 ;; --------------------
 (use-package evil
              :ensure t)                    ;; evil-mode
+(use-package key-chord
+             :ensure t)                    ;; key-chord - library for mangaging kbd bindings
 (use-package magit                    ;; git bindings
              :ensure t
              :commands magit-status
@@ -110,12 +130,46 @@
 
 (use-package proof-site
              :load-path ("~/.emacs.d/lisp/PG/generic")
-             :mode ("\\.v\\'" . coq-mode))
+             :mode ("\\.v\\'" . coq-mode)
+             :config
+             (setup-coq-keys)
+
+             ;;; Hybrid mode by default
+             (setq-default proof-three-window-mode-policy 'hybrid)
+
+             ;; no splash screen
+             (setq proof-splash-seen t)
+
+             ;; Change colour scheme
+             ;; (custom-set-faces
+             ;;   '(proof-eager-annotation-face ((t (:background "medium blue"))))
+             ;;   '(proof-error-face ((t (:background "dark red"))))
+             ;;   '(proof-warning-face ((t (:background "indianred3"))))
+             ;;   )
+
+             )
 
 (use-package company-coq
              :ensure t
              :commands (company-coq-mode)
-             :init (add-hook 'coq-mode-hook 'company-coq-mode t))
+             :init
+             (add-hook 'coq-mode-hook 'company-coq-mode t)
+
+             ;; Turn off symbol prettification
+             (setq company-coq-disabled-features '(prettify-symbols))
+
+             :config
+             ;; Fix parse faillure on Coq 8.6
+             ;; https://github.com/cpitclaudel/company-coq/issues/126
+             (defconst company-coq-tg--preprocessor-substitutions
+                       '(
+                         ("\n"  . " ")
+                         ("[ "  . "( OR-GROUP ")
+                         (" ]"  . " )")
+                         (" | " . " OR ")
+                         ("; "  . " AND ")
+                         ("'" . "’")))
+             )
 
 (use-package json-mode
              :mode "\\.json\\'"
@@ -153,6 +207,15 @@
 (require 'evil)
 (evil-mode t)
 
+;; Key bindings
+(define-key evil-normal-state-map (kbd ";") 'evil-ex)
+
+(setq key-chord-two-keys-delay 0.5)
+(key-chord-define evil-insert-state-map (kbd "jj") 'evil-normal-state)
+
+(key-chord-mode t)
+
+
 ;; Helm-mode
 ;; ----------
 
@@ -166,11 +229,75 @@
 
 ;; User config
 ;; ------------
-(load-theme 'misterioso t)
+(load-theme 'tango-dark t)
 (setq scroll-margin 5
       scroll-conservatively 9999
       scroll-step 1)
 
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
+
+;; Remove useless whitespaces before saving a file
+(add-hook 'before-save-hook 'whitespace-cleanup)
+(add-hook 'before-save-hook (lambda() (delete-trailing-whitespace)))
+
+;; don't show trailing whitespace, is already fixed on save
+(setq-default show-trailing-whitespace nil)
+
+;; default to utf8
+(set-language-environment 'utf-8)
+(setq locale-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(setq-default buffer-file-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+
+;; Treat clipboard input as UTF-8 string first; compound text next, etc.
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+
+;; Turn on column numbering in modeline
+(setq column-number-mode t)
+
+(setq
+  inhibit-startup-message   t   ; Don't want any startup message
+  ;; use-dialog-box nil           ; use no dialog boxes, just use the echo area / mini-buffer
+  ;; redisplay-dont-pause t
+  ;; ns-pop-up-frames nil         ; don't open a new frame when using Open with... for instance
+  search-highlight           t ; Highlight search object
+  query-replace-highlight    t ; Highlight query object
+  mouse-sel-retain-highlight t ; Keep mouse high-lightening
+  read-file-name-completion-ignore-case t
+  x-select-enable-clipboard t
+  x-select-enable-primary t
+  ;;save-interprogram-paste-before-kill t ; has problems with evil-mode in osx!!
+  next-line-add-newlines t
+  ;; apropos-do-all t
+  ;; scroll-error-top-bottom t ; move to farthest point when not able to move up or down enough lines
+  read-buffer-completion-ignore-case t
+  completion-auto-help 'lazy
+  isearch-resume-in-command-history t
+  kill-read-only-ok t
+  isearch-allow-scroll t
+  ;; visible-bell nil
+  color-theme-is-global t
+  sentence-end-double-space nil
+  ;; shift-select-mode nil
+  mouse-yank-at-point t
+  whitespace-style '(face trailing lines-tail tabs)
+  ;; whitespace-line-column 80
+  )
+
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ; turn off the menubar
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ; turn off the toolbar
+
+(fset 'yes-or-no-p 'y-or-n-p)
+(set-default 'indent-tabs-mode nil) ; use spaces for indenting, not tabs
+
+;; Save clipboard contents into kill-ring before replace them
+(setq save-interprogram-paste-before-kill t)
+
+;; Disable warnings except critical
+(setq warning-minimum-level :emergency)
 

@@ -61,3 +61,6 @@ Still struggling but I am actually beginning to like it. Maybe it was for the be
 
 2017-02-17 16:51 Installed proof-general.
 Had fun with installing a bunch of emacs packages and installed and tried proof-general for the first time. Still trying to get a good hang of things but seems to work like a breeze so far.
+
+2017-02-23 16:42 Back to work.
+After a brief relapse into days of self-pity, I am back to work. Still having some trouble with my emacs setup but I am getting the hang of it. Made some new modifications to fix company-coq mucking up and things are working. For now.
