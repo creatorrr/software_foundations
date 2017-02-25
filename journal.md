@@ -70,3 +70,12 @@ Doing the short tutorial along with exercise solutions.
 
 2017-02-23 18:49 Section 2 done.
 Finished sec 2 of Coq in a hurry.
+
+2017-02-25 16:19 A note on turing incompleteness of Coq.
+
+It is very interesting that theorem provers have to be turing-incomplete by design.
+It seems to make obvious sense on the surface why this should be the case given the
+halting problem but I do wonder whether this is  a fundamental in nature and if it is
+is there a proof of it? Could this have any thing to do with Godel's theorems?
+
+Note to self: Discuss with prof.
