@@ -139,14 +139,6 @@
 
              ;; no splash screen
              (setq proof-splash-seen t)
-
-             ;; Change colour scheme
-             ;; (custom-set-faces
-             ;;   '(proof-eager-annotation-face ((t (:background "medium blue"))))
-             ;;   '(proof-error-face ((t (:background "dark red"))))
-             ;;   '(proof-warning-face ((t (:background "indianred3"))))
-             ;;   )
-
              )
 
 (use-package company-coq
@@ -229,7 +221,13 @@
 
 ;; User config
 ;; ------------
+
 (load-theme 'tango-dark t)
+
+;; Turn on line numbers
+(global-linum-mode t)
+(setq linum-format "%4d |  ")
+
 (setq scroll-margin 5
       scroll-conservatively 9999
       scroll-step 1)
@@ -257,36 +255,28 @@
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
-;; Turn on column numbering in modeline
-(setq column-number-mode t)
-
 (setq
   inhibit-startup-message   t   ; Don't want any startup message
-  ;; use-dialog-box nil           ; use no dialog boxes, just use the echo area / mini-buffer
-  ;; redisplay-dont-pause t
-  ;; ns-pop-up-frames nil         ; don't open a new frame when using Open with... for instance
+  redisplay-dont-pause t
   search-highlight           t ; Highlight search object
   query-replace-highlight    t ; Highlight query object
   mouse-sel-retain-highlight t ; Keep mouse high-lightening
   read-file-name-completion-ignore-case t
   x-select-enable-clipboard t
   x-select-enable-primary t
-  ;;save-interprogram-paste-before-kill t ; has problems with evil-mode in osx!!
-  next-line-add-newlines t
-  ;; apropos-do-all t
-  ;; scroll-error-top-bottom t ; move to farthest point when not able to move up or down enough lines
+  save-interprogram-paste-before-kill t
+  apropos-do-all t
+  scroll-error-top-bottom t ; move to farthest point when not able to move up or down enough lines
   read-buffer-completion-ignore-case t
   completion-auto-help 'lazy
   isearch-resume-in-command-history t
   kill-read-only-ok t
   isearch-allow-scroll t
-  ;; visible-bell nil
   color-theme-is-global t
   sentence-end-double-space nil
-  ;; shift-select-mode nil
   mouse-yank-at-point t
   whitespace-style '(face trailing lines-tail tabs)
-  ;; whitespace-line-column 80
+  whitespace-line-column 80
   )
 
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ; turn off the menubar
@@ -299,5 +289,7 @@
 (setq save-interprogram-paste-before-kill t)
 
 ;; Disable warnings except critical
-(setq warning-minimum-level :emergency)
+;; (setq warning-minimum-level :emergency)
 
+;; disable backup
+(setq backup-inhibited t)
