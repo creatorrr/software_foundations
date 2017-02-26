@@ -1,6 +1,7 @@
 (*** Coq in a Hurry ***)
 (*+ Tutorial Exercises +*)
 
+
 (** *Section 1* **)
 
 Check True : Prop.
@@ -192,3 +193,37 @@ Fixpoint count_occur (n : nat) (l : list nat) : nat :=
   end.
 
 Eval compute in count_occur 1 (1::2::3::1::nil).
+
+
+(** *Section 3* **)
+Lemma example2 : forall a b : Prop, a /\ b -> b /\ a.
+
+Proof.
+  intros a b H.
+  split.
+  destruct H as [H1 H2].
+  exact H2.
+  intuition.
+Qed.
+
+Lemma example3 : forall a b : Prop, a \/ b -> b \/ a.
+
+Proof.
+  intros a b H.
+  destruct H as [H1 | H1].
+  right; assumption.
+  left; assumption.
+Qed.
+
+Check le_S.
+Check le_n.
+
+Lemma example4 : 3 <= 5.
+
+Proof.
+  apply le_S.
+  apply le_S.
+  apply le_n.
+Qed.
+
+Check le_trans.
