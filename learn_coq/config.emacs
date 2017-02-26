@@ -144,11 +144,10 @@
 (use-package company-coq
              :ensure t
              :commands (company-coq-mode)
+
              :init
              (add-hook 'coq-mode-hook 'company-coq-mode t)
-
-             ;; Turn off symbol prettification
-             (setq company-coq-disabled-features '(prettify-symbols))
+             (setq company-coq-features/prettify-symbols-in-terminals t)
 
              :config
              ;; Fix parse faillure on Coq 8.6
@@ -226,7 +225,7 @@
 
 ;; Turn on line numbers
 (global-linum-mode t)
-(setq linum-format "%4d |  ")
+(setq linum-format "%4d \u2502  ")
 
 (setq scroll-margin 5
       scroll-conservatively 9999
