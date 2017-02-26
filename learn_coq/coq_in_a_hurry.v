@@ -218,6 +218,13 @@ Qed.
 Check le_S.
 Check le_n.
 
+(** **apply tactic** **)
+(**
+the tactic apply th replaces the current goal with n goals, whose statements are A1
+a1 ... ak, . . . An a1 ... ak. This works well when all the variables that universally
+quantified (here x1 . . . xn) appear in the goal conclusion.
+**)
+
 Lemma example4 : 3 <= 5.
 
 Proof.
@@ -227,3 +234,175 @@ Proof.
 Qed.
 
 Check le_trans.
+
+Lemma example5 : forall x y, x <= 10 -> 10 <= y -> x <= y.
+
+Proof.
+  intros x y xle10 yle10.
+  apply le_trans with (m := 10).
+  assumption.
+  assumption.
+Qed.
+
+(** **rewrite tactic** **)
+(**
+Useful for equality theorems.
+
+Most theorems are universally quantified and the values of the quantified variables
+must be guessed when the theorems are used. The rewrite guesses the values of the
+quantified variables by finding patterns of the left-hand side in the goal’s conclusion and
+instanciating the variables accordingly.
+**)
+
+Lemma example6 : forall x y, (x + y) * (x + y) = x*x + 2*x*y + y*y.
+
+SearchRewrite (_ * (_ + _)).
+(** mult_plus_distr_l: forall n m p : nat, n * (m + p) = n * m + n * p **)
+
+SearchRewrite ((_ + _) * _).
+(** mult_plus_distr_r: forall n m p : nat, (n + m) * p = n * p + m * p **)
+
+SearchRewrite ((_ + _) + _).
+(** plus_assoc: forall n m p : nat, n + (m + p) = n + m + p **)
+
+SearchPattern (?x * ?y = ?y * ?x).
+(** mult_comm: forall n m : nat, n * m = m * n **)
+
+SearchRewrite (S _ * _).
+(** mult_1_l: forall n : nat, 1 * n = n **)
+(** mult_succ_l: forall n m : nat, S n * m = n * m + m **)
+
+SearchRewrite (_ * ( _ * _)).
+(** mult_assoc: forall n m p : nat, n * (m * p) = n * m * p **)
+
+Proof.
+  intros x y.
+  rewrite mult_plus_distr_l.
+  rewrite mult_plus_distr_r.
+  rewrite mult_plus_distr_r.
+  rewrite plus_assoc.
+  (* rewrite with a theorem from right to left, this is possible using the <- modifier. *)
+  rewrite <- plus_assoc with (n := x*x).
+  rewrite mult_comm with (n := y) (m := x).
+  (* We want to rewrite only one of them with mult 1 l from right to left.
+    This is possible, using a tactic called
+    pattern to limit the place where rewriting occurs. *)
+  pattern (x*y) at 1; rewrite <- mult_1_l.
+  rewrite <- mult_succ_l.
+  rewrite mult_assoc.
+  reflexivity.
+Qed.
+
+(** **assert tactic** **)
+(**
+A common approach to proving difficult propositions is to assert intermediary steps using
+a tactic called assert. Given an argument of the form (H : P), this tactic yields two
+goals, where the first one is to prove P, while the second one is to prove the same statement
+as before, but in a context where a hypothesis named H and with the statement P is added.
+ **)
+
+(** **auto tactics** **)
+(**
+intuition and tauto are often useful to prove facts that are tautologies in propositional logic
+(try it whenever the proof only involves manipulations of conjunction, disjunction, and negation)
+
+firstorder can be used for tautologies in first-order logic (try it when ever the proof only
+involves the same connectives, plus existential and universal quantification)
+
+auto is an extensible tactic that tries to apply a collection of theorems that were provided
+beforehand by the user, eauto is like auto, it is more powerful but also more time-consuming.
+
+ring mostly does proofs of equality for expressions containing addition and multiplication.
+**)
+
+(** **omega tactic** **)
+(**
+omega proves systems of linear inequations. An inequation is linear when it is of the form
+A ≤ B or A < B, and A and B are sums of terms of the form n∗x.
+**)
+
+Require Import Omega.
+
+Lemma omega_example : forall f x y, 0 < x -> 0 < f x -> 3* f x <= 2*y -> f x <= y.
+
+Proof.
+  intros; omega.
+Qed.
+
+(** **Tactic reference** **)
+(**
+
+|               | ->            | forall              | /\                    |
+|---------------|---------------|---------------------|-----------------------|
+| Hypothesis H  | apply H       | apply H             | elim H                |
+|               |               |                     | case H                |
+|               |               |                     | destruct H as [H1 H2] |
+| Conclusion    | intros H      | intros H            | split                 |
+
+|               | ~             | exists              | \/                    |
+|---------------|---------------|---------------------|-----------------------|
+| Hypothesis H  | elim H        | elim H              | elim H                |
+|               | case H        | case H              | case H                |
+|               |               | destruct H as [x H1]| destruct H as [H1|H2] |
+| Conclusion    | intros H      | exists v            | left or right         |
+
+|               | =             | False               |                       |
+|---------------|---------------|---------------------|-----------------------|
+| Hypothesis H  | rewrite <- H  | elim H              |                       |
+|               | rewrite H     | case H              |                       |
+| Conclusion    | reflexivity   |                     |                       |
+|               | ring          |                     |                       |
+
+**)
+
+
+(** Exercise on logical connectives **)
+Lemma exercise_lc_1 : forall a b c : Prop, a/\ (b/\c) -> (a/\b) /\c.
+Proof.
+  intros a b c H.
+  destruct H as [H H1].
+  destruct H1 as [H1 H2].
+  split.
+  split.
+  assumption.
+  assumption.
+  assumption.
+Qed.
+
+Lemma exercise_lc_2 : forall a b c d : Prop, (a -> b) /\ (c -> d) /\ a /\ c -> b /\ d.
+Proof.
+  intros a b c d H.
+  destruct H as [H1 [H2 [H3 H4]]].
+  split.
+  apply H1.
+  assumption.
+  apply H2.
+  assumption.
+Qed.
+
+Lemma exercise_lc_3 : forall a : Prop, ~(a /\ ~a).
+Proof.
+  intros a H.
+  elim H.
+  destruct H as [H H1].
+  elim H1.
+  assumption.
+Qed.
+
+Lemma exercise_lc_4 : forall a b c : Prop, a \/ (b \/ c) -> (a \/ b) \/ c.
+Proof.
+  intros a b c H.
+  destruct H as [H | [H1 | H2]].
+  left; left; exact H.
+  left; right; exact H1.
+  right; exact H2.
+Qed.
+
+Lemma exercise_lc_5 : forall a b : Prop, (a \/ b) /\ ~a -> b.
+Proof.
+  intros a b H.
+  destruct H as [[H | H1] H2].
+  elim H2.
+  assumption.
+  assumption.
+Qed.

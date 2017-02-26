@@ -22,6 +22,11 @@ Resources for learning
 - [Coq Official tutorial, Huet, Kahn and Paulin](https://coq.inria.fr/distrib/V8.6/files/Tutorial.pdf)
 - [Coq in a hurry, Yves Bertot](https://cel.archives-ouvertes.fr/inria-00001173v5/document)
 
+### Tactic references
+- [Coq cheatsheet](http://andrej.com/coq/cheatsheet.pdf)
+- [Detailed examples of tactics](http://flint.cs.yale.edu/cs428/coq/doc/Reference-Manual012.html)
+- [Tactics index](https://pjreddie.com/coq-tactics/)
+
 
 Tools
 -----
