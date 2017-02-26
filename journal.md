@@ -79,3 +79,6 @@ halting problem but I do wonder whether this is  a fundamental in nature and if 
 is there a proof of it? Could this have any thing to do with Godel's theorems?
 
 Note to self: Discuss with prof.
+
+2017-02-26 16:41 Not enough explanation about tactics.
+Enjoying the pace of _Coq in a Hurry_ tutorial but it feels like there is very little explanation about the different tactics in it. Assumes a thorough understanding of proof tactics. Hoping a combination of [Software Foundations](https://www.cis.upenn.edu/~bcpierce/sf/current/Preface.html#lab9) and [Coq cheat sheet](http://andrej.com/coq/cheatsheet.pdf) would enrich my understanding to a more satisfactory level.
