@@ -82,3 +82,9 @@ Note to self: Discuss with prof.
 
 2017-02-26 16:41 Not enough explanation about tactics.
 Enjoying the pace of _Coq in a Hurry_ tutorial but it feels like there is very little explanation about the different tactics in it. Assumes a thorough understanding of proof tactics. Hoping a combination of [Software Foundations](https://www.cis.upenn.edu/~bcpierce/sf/current/Preface.html#lab9) and [Coq cheat sheet](http://andrej.com/coq/cheatsheet.pdf) would enrich my understanding to a more satisfactory level.
+
+2017-02-27 11:32 Learning about Curry-Howard correspondence.
+In further research about the turing-incompleteness of Coq and other theorem proving assistants, read about Curry-Howard correspondence which is the direct relationship between computer programs and mathematical proofs. Very interesting! This also formed the basis of Coquand's Calculus of Constructions which is what the Coq system is based on.
+
+2017-02-27 11:36 Moving on to Software Foundations.
+Have had enough of the Coq tutorials. While they helped me get my feet wet, I have realized that they are terrible at introducing the different proof strategies out there. Thanks tho.
