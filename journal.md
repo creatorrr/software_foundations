@@ -88,3 +88,6 @@ In further research about the turing-incompleteness of Coq and other theorem pro
 
 2017-02-27 11:36 Moving on to Software Foundations.
 Have had enough of the Coq tutorials. While they helped me get my feet wet, I have realized that they are terrible at introducing the different proof strategies out there. Thanks tho.
+
+2017-02-27 14:26 Starting Software Foundations.
+The course is interactive in nature with a bunch of Coq files that can be completed for exercises.
