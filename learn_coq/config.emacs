@@ -2,25 +2,22 @@
 
 ;; archive repositories
 ;; --------------------
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("gnu", "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa", "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable", "http://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("milkbox-melpa-stable" . "http://melpa-stable.milkbox.net/packages/"))
 
 ;; For loading proof general
 (add-to-list 'load-path "~/.emacs.d/lisp/PG/generic/")
 
-(setq package-archive-priorities '(("org" . 5)
-                                   ("melpa-stable" . 4)
-                                   ("milkbox-melpa-stable" . 3)
+(setq package-archive-priorities '(
+                                   ("gnu" . 4)
+                                   ("melpa-stable" . 3)
                                    ("melpa" . 2)
-                                   ("gnu" . 1)
-                                   ("marmalade" . 0)
+                                   ("marmalade" . 1)
                                    ))
 
-(setq package-enable-at-startup nil)
+;; (setq package-enable-at-startup nil)
 (package-initialize)
 
 ;; Utils
@@ -28,15 +25,15 @@
 
 (defun setup-coq-keys ()
   (evil-define-key 'normal coq-mode-map
-                   (kbd "M-l") 'proof-goto-point
-                   (kbd "M-k") 'proof-undo-last-successful-command
-                   (kbd "M-j") 'proof-assert-next-command-interactive
-                   )
+    (kbd "M-l") 'proof-goto-point
+    (kbd "M-k") 'proof-undo-last-successful-command
+    (kbd "M-j") 'proof-assert-next-command-interactive
+    )
   (evil-define-key 'insert coq-mode-map
-                   (kbd "M-l") 'proof-goto-point
-                   (kbd "M-k") 'proof-undo-last-successful-command
-                   (kbd "M-j") 'proof-assert-next-command-interactive
-                   )
+    (kbd "M-l") 'proof-goto-point
+    (kbd "M-k") 'proof-undo-last-successful-command
+    (kbd "M-j") 'proof-assert-next-command-interactive
+    )
   )
 
 
@@ -54,142 +51,137 @@
 ;; package list and config
 ;; --------------------
 (use-package evil
-             :ensure t)                    ;; evil-mode
+  :ensure t)                    ;; evil-mode
+
 (use-package key-chord
-             :ensure t)                    ;; key-chord - library for mangaging kbd bindings
+  :ensure t)                    ;; key-chord - library for mangaging kbd bindings
+
 (use-package magit                    ;; git bindings
-             :ensure t
-             :commands magit-status
-             :config
-             (progn
-               (magit-auto-revert-mode 1))
-             :init
-             (add-hook 'magit-mode-hook 'magit-load-config-extensions))
+  :ensure t
+  :commands magit-status
+  :config
+  (progn
+    (magit-auto-revert-mode 1))
+  :init
+  (add-hook 'magit-mode-hook 'magit-load-config-extensions))
 
 (use-package git-commit
-             :ensure t
-             :defer t
-             :config
-             (progn
-               (setq git-commit-summary-max-length 72)))
+  :ensure t
+  :defer t
+  :config
+  (progn
+    (setq git-commit-summary-max-length 72)))
 
 (use-package smooth-scrolling
-             :ensure t)
-
-(use-package flycheck                 ;; syntax check
-             :ensure t
-             :defer 2
-             :diminish flycheck-mode
-             :config
-             (progn
-               (global-flycheck-mode)
-               (setq-default flycheck-disabled-checkers '(coq c/c++-clang c/c++-gcc flycheck-rtags))
-               (setq flycheck-emacs-lisp-load-path 'inherit)))
-
-(use-package flycheck-package
-             :ensure t
-             :defer t)
+  :ensure t)
 
 (use-package projectile               ;; source control
-             :ensure t
-             :commands (projectile-switch-project-by-name projectile-find-file)
-             :init
-             (projectile-global-mode t))
+  :ensure t
+  :commands (projectile-switch-project-by-name projectile-find-file)
+  :init
+  (projectile-global-mode t))
 
 (use-package which-key
-             :ensure t
-             :diminish which-key-mode
-             :config
-             (which-key-mode))
+  :ensure t
+  :diminish which-key-mode
+  :config
+  (which-key-mode))
 
 ;; The package is "python" but the mode is "python-mode":
 (use-package python
-             :ensure t
-             :mode ("\\.py\\'" . python-mode)
-             :interpreter ("python" . python-mode))
+  :ensure t
+  :mode ("\\.py\\'" . python-mode)
+  :interpreter ("python" . python-mode))
 
 (use-package helm
-             :ensure t
-             :bind (("M-x" . helm-M-x)
-                    ("M-<f5>" . helm-find-files)
-                    ([f10] . helm-buffers-list)
-                    ([S-f10] . helm-recentf)))
-
-(use-package company
-             :ensure t
-             :diminish company-mode
-             :defer 2
-             :bind ("C-<tab>" . company-complete)
-             :config
-             (global-company-mode t)
-             (push 'company-rtags company-backends))
+  :ensure t
+  :bind (("M-x" . helm-M-x)
+         ("M-<f5>" . helm-find-files)
+         ([f10] . helm-buffers-list)
+         ([S-f10] . helm-recentf)))
 
 (use-package markdown-mode
-             :ensure t
-             :mode "\\.md\\'")
+  :ensure t
+  :mode "\\.md\\'")
 
 (use-package proof-site
-             :load-path ("~/.emacs.d/lisp/PG/generic")
-             :mode ("\\.v\\'" . coq-mode)
-             :config
-             (setup-coq-keys)
+  :load-path ("~/.emacs.d/lisp/PG/generic")
+  :mode ("\\.v\\'" . coq-mode)
+  :config
+  (setup-coq-keys)
 
              ;;; Hybrid mode by default
-             (setq-default proof-three-window-mode-policy 'hybrid)
+  (setq-default proof-three-window-mode-policy 'hybrid)
 
-             ;; no splash screen
-             (setq proof-splash-seen t)
-             )
-
-(use-package company-coq
-             :ensure t
-             :commands (company-coq-mode)
-
-             :init
-             (add-hook 'coq-mode-hook 'company-coq-mode t)
-             (setq company-coq-features/prettify-symbols-in-terminals t)
-
-             :config
-             ;; Fix parse faillure on Coq 8.6
-             ;; https://github.com/cpitclaudel/company-coq/issues/126
-             (defconst company-coq-tg--preprocessor-substitutions
-                       '(
-                         ("\n"  . " ")
-                         ("[ "  . "( OR-GROUP ")
-                         (" ]"  . " )")
-                         (" | " . " OR ")
-                         ("; "  . " AND ")
-                         ("'" . "’")))
-             )
+  ;; no splash screen
+  (setq proof-splash-seen t)
+  )
 
 (use-package json-mode
-             :mode "\\.json\\'"
-             :ensure t)
+  :mode "\\.json\\'"
+  :ensure t)
 
 (use-package web-mode
-             :ensure t
-             :mode ("\\.html\\'"
-                    "\\.js\\'"
-                    "\\.css\\'"
-                    "\\.jsx\\'"
-                    "\\.php\\'")
-             :config
-             (setq-default web-mode-markup-indent-offset 2))
+  :ensure t
+  :mode ("\\.html\\'"
+         "\\.js\\'"
+         "\\.css\\'"
+         "\\.jsx\\'"
+         "\\.php\\'")
+  :config
+  (setq-default web-mode-markup-indent-offset 2))
 
 (use-package yaml-mode
-             :mode "\\.yaml\\'"
-             :ensure t)
+  :mode "\\.yaml\\'"
+  :ensure t)
 
 (use-package pdf-tools
-             :mode ("\\.pdf\\'" . pdf-view-mode)
-             :ensure t
-             :init (add-hook 'pdf-view-mode-hook 'pdf-view-fit-page-to-window))
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :ensure t
+  :init (add-hook 'pdf-view-mode-hook 'pdf-view-fit-page-to-window))
 
 (use-package rainbow-delimiters
-             :ensure t
-             :commands rainbow-delimiters-mode
-             :init
-             (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  :ensure t
+  :commands rainbow-delimiters-mode
+  :init
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+(use-package hindent
+  :ensure t
+  :commands hindent-mode)
+
+(use-package ghc
+  :ensure t
+  :commands ghc-init ghc-debug)
+
+(use-package haskell-mode
+  :ensure t
+  :mode "\\.hs\\'"
+  :commands haskell-mode
+  :config
+  (custom-set-variables
+   '(haskell-ask-also-kill-buffers nil)
+   '(haskell-process-type (quote stack-ghci))
+   '(haskell-interactive-popup-errors nil))
+
+  (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+  (add-hook 'haskell-mode-hook 'flycheck-mode)
+  (add-hook 'haskell-mode-hook 'hindent-mode)
+  (add-hook 'haskell-mode-hook (lambda ()
+                                 (add-hook 'before-save-hook 'haskell-mode-format-imports nil t)
+                                 (add-hook 'before-save-hook 'hindent-reformat-buffer)))
+  )
+
+(use-package nlinum
+  :ensure t)
+
+;; (use-package nlinum-relative
+;;   :ensure t
+;;   :config
+;;   ;; something else you want
+;;   (nlinum-relative-setup-evil)
+;;   (add-hook 'prog-mode-hook 'nlinum-relative-mode))
 
 ;; Evil mode
 ;; ----------
@@ -201,11 +193,63 @@
 ;; Key bindings
 (define-key evil-normal-state-map (kbd ";") 'evil-ex)
 
-(setq key-chord-two-keys-delay 0.5)
+(setq key-chord-two-keys-delay 0.8)
 (key-chord-define evil-insert-state-map (kbd "jj") 'evil-normal-state)
 
 (key-chord-mode t)
 
+;; Company mode
+;; -------------
+(use-package company
+  :ensure t
+  :diminish company-mode
+  :defer 2
+  :bind ("C-<tab>" . company-complete)
+  :config
+  (global-company-mode t)
+  (push 'company-rtags company-backends))
+
+(use-package company-coq
+  :ensure t
+  :commands (company-coq-mode)
+
+  :init
+  (add-hook 'coq-mode-hook 'company-coq-mode t)
+  (setq company-coq-features/prettify-symbols-in-terminals t)
+
+  :config
+  ;; Fix parse faillure on Coq 8.6
+  ;; https://github.com/cpitclaudel/company-coq/issues/126
+  (defconst company-coq-tg--preprocessor-substitutions
+    '(
+      ("\n"  . " ")
+      ("[ "  . "( OR-GROUP ")
+      (" ]"  . " )")
+      (" | " . " OR ")
+      ("; "  . " AND ")
+      ("'" . "’")))
+  )
+
+;; Flycheck mode
+;; --------------
+
+(use-package flycheck                 ;; syntax check
+  :ensure t
+  :defer 2
+  :diminish flycheck-mode
+  :config
+  (progn
+    (global-flycheck-mode)
+    (setq-default flycheck-disabled-checkers '(coq c/c++-clang c/c++-gcc flycheck-rtags))
+    (setq flycheck-emacs-lisp-load-path 'inherit)))
+
+(use-package flycheck-package
+  :ensure t
+  :defer t)
+
+(use-package flycheck-haskell
+  :ensure t
+  :commands flycheck-haskell-setup)
 
 ;; Helm-mode
 ;; ----------
@@ -231,6 +275,9 @@
       scroll-conservatively 9999
       scroll-step 1)
 
+                                        ;j; show matching parentheses
+(show-paren-mode t)
+
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 
@@ -255,28 +302,28 @@
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
 (setq
-  inhibit-startup-message   t   ; Don't want any startup message
-  redisplay-dont-pause t
-  search-highlight           t ; Highlight search object
-  query-replace-highlight    t ; Highlight query object
-  mouse-sel-retain-highlight t ; Keep mouse high-lightening
-  read-file-name-completion-ignore-case t
-  x-select-enable-clipboard t
-  x-select-enable-primary t
-  save-interprogram-paste-before-kill t
-  apropos-do-all t
-  scroll-error-top-bottom t ; move to farthest point when not able to move up or down enough lines
-  read-buffer-completion-ignore-case t
-  completion-auto-help 'lazy
-  isearch-resume-in-command-history t
-  kill-read-only-ok t
-  isearch-allow-scroll t
-  color-theme-is-global t
-  sentence-end-double-space nil
-  mouse-yank-at-point t
-  whitespace-style '(face trailing lines-tail tabs)
-  whitespace-line-column 80
-  )
+ inhibit-startup-message   t   ; Don't want any startup message
+ redisplay-dont-pause t
+ search-highlight           t ; Highlight search object
+ query-replace-highlight    t ; Highlight query object
+ mouse-sel-retain-highlight t ; Keep mouse high-lightening
+ read-file-name-completion-ignore-case t
+ x-select-enable-clipboard t
+ x-select-enable-primary t
+ save-interprogram-paste-before-kill t
+ apropos-do-all t
+ scroll-error-top-bottom t ; move to farthest point when not able to move up or down enough lines
+ read-buffer-completion-ignore-case t
+ completion-auto-help 'lazy
+ isearch-resume-in-command-history t
+ kill-read-only-ok t
+ isearch-allow-scroll t
+ color-theme-is-global t
+ sentence-end-double-space nil
+ mouse-yank-at-point t
+ whitespace-style '(face trailing lines-tail tabs)
+ whitespace-line-column 80
+ )
 
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ; turn off the menubar
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ; turn off the toolbar
@@ -292,3 +339,6 @@
 
 ;; disable backup
 (setq backup-inhibited t)
+
+;; enables interaction with system clipboard
+(setq x-select-enable-clipboard t)
