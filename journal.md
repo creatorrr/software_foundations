@@ -91,3 +91,9 @@ Have had enough of the Coq tutorials. While they helped me get my feet wet, I ha
 
 2017-02-27 14:26 Starting Software Foundations.
 The course is interactive in nature with a bunch of Coq files that can be completed for exercises.
+
+2017-02-28 10:04 Software foundations Basics fin.
+Just finished the Basics.v set of exercises and tutorials. Extremely enlightening and structured. Goes over all tactics without assuming prereq knowledge while offering enough challenge.
+
+2017-02-28 10:04 I dreamed in Coq last night.
+:O :| D: !!!
