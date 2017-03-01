@@ -1,23 +1,38 @@
 (require 'package)
+(require 'cl)
+
+;; GNU TLS fix
+;; -----------
+
+(if (fboundp 'gnutls-available-p)
+    (fmakunbound 'gnutls-available-p))
+
+(setq tls-program '("gnutls-cli --tofu -p %p %h")
+      imap-ssl-program '("gnutls-cli --tofu -p %p %s")
+      smtpmail-stream-type 'starttls
+      starttls-extra-arguments '("--tofu")
+      )
+
+;; More details: https://github.com/nicferrier/elmarmalade/issues/55#issuecomment-166271364
 
 ;; archive repositories
 ;; --------------------
-(add-to-list 'package-archives '("gnu", "http://elpa.gnu.org/packages/"))
-(add-to-list 'package-archives '("melpa", "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa-stable", "http://stable.melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
-;; For loading proof general
-(add-to-list 'load-path "~/.emacs.d/lisp/PG/generic/")
+(setq package-archives
+      '(("melpa-stable" . "http://stable.melpa.org/packages/")
+        ("gnu" . "http://elpa.gnu.org/packages/")
+        ("melpa" . "http://melpa.org/packages/")
+        ("marmalade" . "http://marmalade-repo.org/packages/")))
 
-(setq package-archive-priorities '(
-                                   ("gnu" . 4)
-                                   ("melpa-stable" . 3)
-                                   ("melpa" . 2)
-                                   ("marmalade" . 1)
-                                   ))
+(setq package-archive-priorities
+      '(
+        ("gnu" . 4)
+        ("melpa-stable" . 3)
+        ("melpa" . 2)
+        ("marmalade" . 1)
+        ))
 
-;; (setq package-enable-at-startup nil)
+(setq package-enable-at-startup nil)
 (package-initialize)
 
 ;; Utils
@@ -36,9 +51,19 @@
     )
   )
 
+(defun ignore-error-wrapper (fn)
+  "Funtion return new function that ignore errors.
+   The function wraps a function with `ignore-errors' macro."
+  (lexical-let ((fn fn))
+    (lambda ()
+      (interactive)
+      (ignore-errors
+        (funcall fn)))))
+
 
 ;; use-package init
 ;; --------------------
+
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -50,6 +75,7 @@
 
 ;; package list and config
 ;; --------------------
+
 (use-package evil
   :ensure t)                    ;; evil-mode
 
@@ -71,6 +97,17 @@
   :config
   (progn
     (setq git-commit-summary-max-length 72)))
+
+(use-package grandshell-theme
+  :ensure t)
+
+(use-package focus
+  :ensure t)
+
+(use-package spu
+  :ensure t
+  :defer 5 ;; defer package loading for 5 second
+  :config (spu-package-upgrade-daily))
 
 (use-package smooth-scrolling
   :ensure t)
@@ -104,13 +141,25 @@
   :ensure t
   :mode "\\.md\\'")
 
+;; Init Agda
+(let* (
+       (agda-mode-locate (shell-command-to-string "agda-mode locate"))
+       (load-path (file-name-directory agda-mode-locate)))
+  (defconst agda2-load-path load-path))
+
+(use-package agda2
+  :load-path agda2-load-path
+  :mode ("\\.agda\\'" . agda2-mode)
+  :config
+  (add-hook 'agda2-mode-hook (lambda () (add-hook 'evil-insert-state-entry-hook (lambda () (set-input-method "Agda"))))))
+
 (use-package proof-site
   :load-path ("~/.emacs.d/lisp/PG/generic")
   :mode ("\\.v\\'" . coq-mode)
   :config
   (setup-coq-keys)
 
-             ;;; Hybrid mode by default
+  ;; Hybrid mode by default
   (setq-default proof-three-window-mode-policy 'hybrid)
 
   ;; no splash screen
@@ -176,12 +225,26 @@
 (use-package nlinum
   :ensure t)
 
-;; (use-package nlinum-relative
-;;   :ensure t
-;;   :config
-;;   ;; something else you want
-;;   (nlinum-relative-setup-evil)
-;;   (add-hook 'prog-mode-hook 'nlinum-relative-mode))
+(use-package nlinum-relative
+  :ensure t
+  :config
+  (nlinum-relative-setup-evil)
+  (setq nlinum-relative-redisplay-delay 0.01)
+  (add-hook 'prog-mode-hook 'nlinum-relative-mode))
+
+(use-package powerline
+  :ensure t
+  :config (powerline-vim-theme))
+
+(use-package smex
+  :ensure t
+  :config (smex-initialize)
+  :bind (
+         ("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)
+         ("C-c M-x" . execute-extended-command)
+         )
+  )
 
 ;; Evil mode
 ;; ----------
@@ -200,6 +263,7 @@
 
 ;; Company mode
 ;; -------------
+
 (use-package company
   :ensure t
   :diminish company-mode
@@ -262,20 +326,40 @@
 ;; Turn helm on
 (helm-mode 1)
 
+;; Windmove config
+;; ----------------
+
+(windmove-default-keybindings 'meta)
+
+(global-set-key (kbd "C-h") (ignore-error-wrapper 'windmove-left))
+(global-set-key (kbd "C-l") (ignore-error-wrapper 'windmove-right))
+(global-set-key (kbd "C-k") (ignore-error-wrapper 'windmove-up))
+(global-set-key (kbd "C-j") (ignore-error-wrapper 'windmove-down))
+
+(use-package framemove
+  :ensure t
+  :config (setq framemove-hook-into-windmove t))
+
 ;; User config
 ;; ------------
 
-(load-theme 'tango-dark t)
+(load-theme 'grandshell t)
+
+;; Cursor
+(blink-cursor-mode t)
+(setq blink-cursor-interval 0.8)
+
+(setq cursor-type 'bar)
 
 ;; Turn on line numbers
-(global-linum-mode t)
-(setq linum-format "%4d \u2502  ")
+(global-nlinum-mode t)
+(setq nlinum-format "%4d \u2502 ")
 
 (setq scroll-margin 5
       scroll-conservatively 9999
       scroll-step 1)
 
-                                        ;j; show matching parentheses
+;; show matching parentheses
 (show-paren-mode t)
 
 (setq-default tab-width 2)
@@ -288,19 +372,22 @@
 ;; don't show trailing whitespace, is already fixed on save
 (setq-default show-trailing-whitespace nil)
 
-;; default to utf8
-(set-language-environment 'utf-8)
-(setq locale-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(setq-default buffer-file-coding-system 'utf-8)
-(set-selection-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ; turn off the menubar
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ; turn off the toolbar
 
-;; Treat clipboard input as UTF-8 string first; compound text next, etc.
-(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+(fset 'yes-or-no-p 'y-or-n-p)
+(set-default 'indent-tabs-mode nil) ; use spaces for indenting, not tabs
 
+;; Save clipboard contents into kill-ring before replace them
+(setq save-interprogram-paste-before-kill t)
+
+;; disable backup
+(setq backup-inhibited t)
+
+;; enables interaction with system clipboard
+(setq x-select-enable-clipboard t)
+
+;; Misc
 (setq
  inhibit-startup-message   t   ; Don't want any startup message
  redisplay-dont-pause t
@@ -325,20 +412,15 @@
  whitespace-line-column 80
  )
 
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1)) ; turn off the menubar
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ; turn off the toolbar
+;; default to utf8
+(set-language-environment 'utf-8)
+(setq locale-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(setq-default buffer-file-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
 
-(fset 'yes-or-no-p 'y-or-n-p)
-(set-default 'indent-tabs-mode nil) ; use spaces for indenting, not tabs
-
-;; Save clipboard contents into kill-ring before replace them
-(setq save-interprogram-paste-before-kill t)
-
-;; Disable warnings except critical
-;; (setq warning-minimum-level :emergency)
-
-;; disable backup
-(setq backup-inhibited t)
-
-;; enables interaction with system clipboard
-(setq x-select-enable-clipboard t)
+;; Treat clipboard input as UTF-8 string first; compound text next, etc.
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))

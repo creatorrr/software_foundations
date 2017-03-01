@@ -97,3 +97,6 @@ Just finished the Basics.v set of exercises and tutorials. Extremely enlightenin
 
 2017-02-28 10:04 I dreamed in Coq last night.
 :O :| D: !!!
+
+2017-03-01 09:35 Loving emacs.
+Been playing around wit emacs and elisp. Absolutely love it!
