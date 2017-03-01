@@ -1263,7 +1263,39 @@ Qed.
         then converting it to unary should yield the same result as
         first converting it to unary and then incrementing. *)
 
-(* FILL IN HERE *)
+Inductive bin : Type :=
+  b0 : bin
+| D : bin -> bin
+| D1 : bin -> bin.
+
+Fixpoint incr (n : bin) : bin :=
+  match n with
+    b0 => D1 n
+  | D m => D1 m
+  | D1 m => D (incr m)
+
+  end.
+
+Fixpoint bin_to_nat (b : bin) : nat :=
+  match b with
+    b0 => O
+  | D m => 2 * (bin_to_nat m)
+  | D1 m => S (2 * (bin_to_nat m))
+
+  end.
+
+Example test_bin_incr1 : forall b : bin, bin_to_nat (incr b) = S (bin_to_nat b).
+Proof.
+  intros b. induction b as [|n' IHn' |m' IHm'].
+  - simpl. reflexivity.
+  - simpl. rewrite <- plus_n_O. reflexivity.
+  - simpl. rewrite <- plus_n_O. rewrite <- plus_n_O. rewrite -> IHm'.
+    assert (H : forall a b : nat, S a + S b = S (S (a + b))). {
+      intros. simpl. rewrite <- plus_n_Sm. reflexivity.
+    }
+    rewrite -> H. reflexivity.
+Qed.
+j
 (** [] *)
 
 (** $Date: 2016-11-22 16:39:52 -0500 (Tue, 22 Nov 2016) $ *)
