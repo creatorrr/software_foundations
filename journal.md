@@ -103,3 +103,6 @@ Been playing around wit emacs and elisp. Absolutely love it!
 
 2017-03-01 15:05 Finished advanced 5* ex at the end of Basics.
 It wasn't nearly as difficult as I expected it to be.
+
+2017-03-01 15:10 "Informal proofs are algorithms; formal proofs are code".
+Woah. Mind = blown...

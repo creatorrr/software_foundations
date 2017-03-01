@@ -414,6 +414,7 @@ Proof.
     Theorem: Addition is commutative.
 
     Proof: (* FILL IN HERE *)
+    (* Omitting. *)
 *)
 (** [] *)
 
@@ -425,6 +426,7 @@ Proof.
     Theorem: [true = beq_nat n n] for any [n].
 
     Proof: (* FILL IN HERE *)
+    (* Omitting. *)
 [] *)
 
 (* ################################################################# *)
@@ -437,7 +439,14 @@ Proof.
 Theorem plus_swap : forall n m p : nat,
   n + (m + p) = m + (n + p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p.
+  induction n as [|n' IHn'].
+  - reflexivity.
+  - simpl. assert (H : forall a b : nat, a + S b = S (a + b)). {
+      intros. simpl. rewrite -> plus_n_Sm. reflexivity.
+    }
+    rewrite -> H. rewrite -> IHn'. reflexivity.
+Qed.
 
 (** Now prove commutativity of multiplication.  (You will probably
     need to define and prove a separate subsidiary theorem to be used
