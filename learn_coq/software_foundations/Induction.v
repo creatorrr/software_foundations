@@ -130,22 +130,35 @@ Proof.
 Theorem mult_0_r : forall n:nat,
   n * 0 = 0.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. induction n as [| n' IHn'].
+  - reflexivity.
+  - simpl. rewrite -> IHn'. reflexivity.
+Qed.
 
 Theorem plus_n_Sm : forall n m : nat,
   S (n + m) = n + (S m).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m. induction n as [|n' IHn'].
+  - rewrite -> plus_O_n. rewrite -> plus_O_n. reflexivity.
+  - simpl. rewrite -> IHn'. reflexivity.
+Qed.
 
 Theorem plus_comm : forall n m : nat,
   n + m = m + n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m. induction n as [|n' IHn'].
+  - rewrite <-  plus_n_O. reflexivity.
+  - simpl. rewrite -> IHn'. rewrite -> plus_n_Sm. reflexivity.
+Qed.
 
 Theorem plus_assoc : forall n m p : nat,
   n + (m + p) = (n + m) + p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p. simpl. induction n as [|n' IHn'].
+  - reflexivity.
+  - simpl. rewrite -> IHn'. reflexivity.
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 2 stars (double_plus)  *)
@@ -161,7 +174,11 @@ Fixpoint double (n:nat) :=
 
 Lemma double_plus : forall n, double n = n + n .
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. induction n as [|n' IHn'].
+  - reflexivity.
+  - simpl. rewrite -> IHn'. rewrite <- plus_n_Sm. reflexivity.
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (evenb_S)  *)
@@ -175,14 +192,29 @@ Proof.
 Theorem evenb_S : forall n : nat,
   evenb (S n) = negb (evenb n).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. simpl. induction n as [|n' IHn'].
+  - reflexivity.
+  - simpl. rewrite -> IHn'. rewrite -> negb_involutive. reflexivity.
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 1 starM (destruct_induction)  *)
 (** Briefly explain the difference between the tactics [destruct]
     and [induction].
 
-(* FILL IN HERE *)
+(*
+`destruct` tactic takes a variable and splits the current goal into n subgoals each
+corresponding to one of the data constructors of that value. This allows us to
+consider and prove the original lemma on a case by case basis which is sometimes
+easier than trying to prove the original hypothesis piecemeal.
+
+`induction` tactic takes a special class of variables which are recursively defined
+such that they operations on them can be in partial order. In such cases, the tactic
+splits the curret goal into a base case and a step case with an added hypothesis of
+the previous step. If a proof follows from these two conditions then it is true for
+all values that the variable can take. e.g. for `nat` type.
+ *)
 *)
 (** [] *)
 
