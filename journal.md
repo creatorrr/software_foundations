@@ -109,3 +109,7 @@ Woah. Mind = blown...
 
 2017-03-02 00:07 Some of the proofs can be surprisingly difficult.
 Like the distributive property of mult has been bugging me for hours...
+
+2017-03-02 11:10 Phew!
+Finally solved the mult_plus_distr_r proof. Took me triple induction, three previous proofs, two sub-proofs and half a bottle of tylenol.
+Note to self: Ask prof if there is a better solution to this and also if there is a tactic to do multiple repeated steps automatically.

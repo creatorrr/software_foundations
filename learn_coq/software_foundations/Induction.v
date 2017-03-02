@@ -562,14 +562,26 @@ Theorem mult_plus_distr_r : forall n m p : nat,
 Proof.
   (* Guess: induction *)
   intros n m p. induction p as [|p' IHp'].
-  - rewrite <- mult_n_O. rewrite -> mult_0_r. rewrite -> mult_0_r. reflexivity.
+  - rewrite <- mult_n_O.
+    rewrite -> mult_0_r. rewrite -> mult_0_r.
+    reflexivity.
   - assert (H : forall a b : nat, a * S b = a + a*b). {
       intros a b. induction a as [|a' IHa'].
       + reflexivity.
       + simpl. rewrite -> IHa'. rewrite -> plus_swap. reflexivity.
     }
     rewrite -> H. rewrite IHp'.
-Abort.
+    assert (H1 : forall e f g h : nat, (e + f) + (g + h) = (e + g) + (f + h)). {
+      intros e f g h. induction f as [|f' IHf'].
+      - simpl. rewrite <- plus_n_O.
+        rewrite -> plus_assoc. reflexivity.
+      - simpl. rewrite <- plus_n_Sm.
+        simpl. rewrite <- plus_n_Sm.
+        rewrite -> IHf'. reflexivity.
+    }
+    rewrite -> H1. rewrite <- H. rewrite <- H.
+    reflexivity.
+Qed.
 
 Theorem mult_assoc : forall n m p : nat,
   n * (m * p) = (n * m) * p.
