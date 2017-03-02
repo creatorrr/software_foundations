@@ -256,7 +256,7 @@
 ;; Key bindings
 (define-key evil-normal-state-map (kbd ";") 'evil-ex)
 
-(setq key-chord-two-keys-delay 0.8)
+(setq key-chord-two-keys-delay 1.0)
 (key-chord-define evil-insert-state-map (kbd "jj") 'evil-normal-state)
 
 (key-chord-mode t)
