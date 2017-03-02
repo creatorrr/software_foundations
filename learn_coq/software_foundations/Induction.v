@@ -442,10 +442,8 @@ Proof.
   intros n m p.
   induction n as [|n' IHn'].
   - reflexivity.
-  - simpl. assert (H : forall a b : nat, a + S b = S (a + b)). {
-      intros. simpl. rewrite -> plus_n_Sm. reflexivity.
-    }
-    rewrite -> H. rewrite -> IHn'. reflexivity.
+  - simpl. rewrite <- plus_n_Sm.
+    rewrite -> IHn'. reflexivity.
 Qed.
 
 (** Now prove commutativity of multiplication.  (You will probably
@@ -459,14 +457,10 @@ Proof.
   intros m n. induction n as [|n' IHn'].
   - rewrite -> mult_0_r. reflexivity.
   - simpl. rewrite <- IHn'.
-    assert (H : forall a b : nat, a * S b = a + a*b). {
-      intros a b. induction a as [|a' IHa'].
-      + reflexivity.
-      + simpl. rewrite -> IHa'. rewrite -> plus_swap. reflexivity.
-    }
-    rewrite -> H.
-    reflexivity.
+    rewrite <- mult_n_Sm.
+    rewrite -> plus_comm. reflexivity.
 Qed.
+
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (more_exercises)  *)
@@ -565,12 +559,7 @@ Proof.
   - rewrite <- mult_n_O.
     rewrite -> mult_0_r. rewrite -> mult_0_r.
     reflexivity.
-  - assert (H : forall a b : nat, a * S b = a + a*b). {
-      intros a b. induction a as [|a' IHa'].
-      + reflexivity.
-      + simpl. rewrite -> IHa'. rewrite -> plus_swap. reflexivity.
-    }
-    rewrite -> H. rewrite IHp'.
+  - rewrite <- mult_n_Sm. rewrite IHp'.
     assert (H1 : forall e f g h : nat, (e + f) + (g + h) = (e + g) + (f + h)). {
       intros e f g h. induction f as [|f' IHf'].
       - simpl. rewrite <- plus_n_O.
@@ -579,14 +568,19 @@ Proof.
         simpl. rewrite <- plus_n_Sm.
         rewrite -> IHf'. reflexivity.
     }
-    rewrite -> H1. rewrite <- H. rewrite <- H.
+    rewrite -> H1. rewrite -> mult_n_Sm. rewrite -> mult_n_Sm.
     reflexivity.
 Qed.
 
 Theorem mult_assoc : forall n m p : nat,
   n * (m * p) = (n * m) * p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* Guess: destruct *)
+  intros n m p. induction n as [|n' IHn'].
+  - reflexivity.
+  - simpl. rewrite -> mult_plus_distr_r.
+    rewrite -> IHn'. reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (beq_nat_refl)  *)
@@ -599,7 +593,11 @@ Proof.
 Theorem beq_nat_refl : forall n : nat,
   true = beq_nat n n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* Guess: induction *)
+  intros n. induction n as [|n' IHn'].
+  - reflexivity.
+  - simpl. rewrite <- IHn'. reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (plus_swap')  *)
