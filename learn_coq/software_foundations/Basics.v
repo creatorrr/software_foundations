@@ -1295,7 +1295,6 @@ Proof.
     }
     rewrite -> H. reflexivity.
 Qed.
-j
 (** [] *)
 
 (** $Date: 2016-11-22 16:39:52 -0500 (Tue, 22 Nov 2016) $ *)
