@@ -456,7 +456,17 @@ Qed.
 Theorem mult_comm : forall m n : nat,
   m * n = n * m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros m n. induction n as [|n' IHn'].
+  - rewrite -> mult_0_r. reflexivity.
+  - simpl. rewrite <- IHn'.
+    assert (H : forall a b : nat, a * S b = a + a*b). {
+      intros a b. induction a as [|a' IHa'].
+      + reflexivity.
+      + simpl. rewrite -> IHa'. rewrite -> plus_swap. reflexivity.
+    }
+    rewrite -> H.
+    reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (more_exercises)  *)
@@ -471,31 +481,55 @@ Proof.
 Theorem leb_refl : forall n:nat,
   true = leb n n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* Guess: induction (maybe destruct too) *)
+  intros n. induction n as [|n' IHn'].
+  - reflexivity.
+  - simpl. rewrite -> IHn'. reflexivity.
+Qed.
 
 Theorem zero_nbeq_S : forall n:nat,
   beq_nat 0 (S n) = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* Guess: induction *)
+  intros n. destruct n as [|n'].
+  - reflexivity.
+  - reflexivity.
+Qed.
 
 Theorem andb_false_r : forall b : bool,
   andb b false = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* Guess: destruct *)
+  intros b. destruct b as [].
+  - reflexivity.
+  - reflexivity.
+Qed.
 
 Theorem plus_ble_compat_l : forall n m p : nat,
   leb n m = true -> leb (p + n) (p + m) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* Guess: destruct *)
+  intros n m p H. induction p as [|p' IHp'].
+  - simpl. assumption.
+  - simpl. rewrite -> IHp'. reflexivity.
+Qed.
 
 Theorem S_nbeq_0 : forall n:nat,
   beq_nat (S n) 0 = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* Guess: destruct *)
+  intros n. destruct n as [|n'].
+  - reflexivity.
+  - reflexivity.
+Qed.
 
 Theorem mult_1_l : forall n:nat, 1 * n = n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* Guess: induction *)
+  intros [|n'].
+  - reflexivity.
+  - simpl. rewrite -> plus_n_O. reflexivity.
+Qed.
 
 Theorem all3_spec : forall b c : bool,
     orb
@@ -504,12 +538,38 @@ Theorem all3_spec : forall b c : bool,
                (negb c))
   = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* Guess: rewrite & sub-proof *)
+  intros b c.
+  assert (H : forall p q : bool, orb (negb p) (negb q) = negb (andb p q)). {
+    intros [] [].
+    - reflexivity.
+    - reflexivity.
+    - reflexivity.
+    - reflexivity.
+  }
+  rewrite -> H.
+  assert (H1 : forall a : bool, orb a (negb a) = true). {
+    intros [].
+    - reflexivity.
+    - reflexivity.
+  }
+  rewrite -> H1.
+  reflexivity.
+Qed.
 
 Theorem mult_plus_distr_r : forall n m p : nat,
   (n + m) * p = (n * p) + (m * p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* Guess: induction *)
+  intros n m p. induction p as [|p' IHp'].
+  - rewrite <- mult_n_O. rewrite -> mult_0_r. rewrite -> mult_0_r. reflexivity.
+  - assert (H : forall a b : nat, a * S b = a + a*b). {
+      intros a b. induction a as [|a' IHa'].
+      + reflexivity.
+      + simpl. rewrite -> IHa'. rewrite -> plus_swap. reflexivity.
+    }
+    rewrite -> H. rewrite IHp'.
+Abort.
 
 Theorem mult_assoc : forall n m p : nat,
   n * (m * p) = (n * m) * p.

@@ -106,3 +106,6 @@ It wasn't nearly as difficult as I expected it to be.
 
 2017-03-01 15:10 "Informal proofs are algorithms; formal proofs are code".
 Woah. Mind = blown...
+
+2017-03-02 00:07 Some of the proofs can be surprisingly difficult.
+Like the distributive property of mult has been bugging me for hours...
