@@ -651,7 +651,9 @@ Qed.
     definitions to make the property easier to prove, feel free to
     do so! *)
 
-(* FILL IN HERE *)
+Theorem bin_to_nat_pres_incr : forall (b : bin), bin_to_nat (incr b) = S (bin_to_nat b).
+  intros b. apply test_bin_incr1.
+Qed.
 (** [] *)
 
 (** **** Exercise: 5 stars, advancedM (binary_inverse)  *)
@@ -680,7 +682,33 @@ Qed.
     Again, feel free to change your earlier definitions if this helps
     here. *)
 
-(* FILL IN HERE *)
+Fixpoint nat_to_bin (n :nat) : bin :=
+  match n with
+    O => b0
+  | S p => incr (nat_to_bin p)
+
+  end.
+
+Eval compute in (bin_to_nat (nat_to_bin 1357)).
+
+Theorem bin_to_nat_nat_to_bin_ident : forall (n : nat), bin_to_nat (nat_to_bin n) = n.
+  intros n. induction n as [|n' IHn'].
+  - reflexivity.
+  - simpl. rewrite -> bin_to_nat_pres_incr.
+    rewrite -> IHn'. reflexivity.
+Qed.
+
+Fixpoint normalize (b : bin) : bin :=
+  match b with
+    b0 => b0
+  | D b0 => b0
+  | D p => D (normalize p)
+  | D1 m => D1 (normalize m)
+
+  end.
+
+Eval compute in normalize (incr (incr (incr b0))).
+Eval compute in normalize (incr (incr (incr (D (D (D b0)))))).
 (** [] *)
 
 (** $Date: 2016-10-07 14:01:19 -0400 (Fri, 07 Oct 2016) $ *)
