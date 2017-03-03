@@ -1,5 +1,4 @@
 (** * Basics: Functional Programming in Coq *)
-
 (* REMINDER:
 
           #####################################################
@@ -8,7 +7,7 @@
 
    (See the [Preface] for why.)
 
-*)
+ *)
 
 (* ################################################################# *)
 (** * Introduction *)
@@ -68,13 +67,13 @@
     we are defining a new set of data values -- a _type_. *)
 
 Inductive day : Type :=
-  | monday : day
-  | tuesday : day
-  | wednesday : day
-  | thursday : day
-  | friday : day
-  | saturday : day
-  | sunday : day.
+| monday : day
+| tuesday : day
+| wednesday : day
+| thursday : day
+| friday : day
+| saturday : day
+| sunday : day.
 
 (** The type is called [day], and its members are [monday],
     [tuesday], etc.  The second and following lines of the definition
@@ -175,8 +174,8 @@ Proof. simpl. reflexivity.  Qed.
     booleans, with members [true] and [false]. *)
 
 Inductive bool : Type :=
-  | true : bool
-  | false : bool.
+| true : bool
+| false : bool.
 
 (** Although we are rolling our own booleans here for the sake
     of building up everything from scratch, Coq does, of course,
@@ -323,28 +322,28 @@ Check negb.
 
 Module NatPlayground.
 
-(* ================================================================= *)
-(** ** Numbers *)
+  (* ================================================================= *)
+  (** ** Numbers *)
 
-(** The types we have defined so far are examples of "enumerated
+  (** The types we have defined so far are examples of "enumerated
     types": their definitions explicitly enumerate a finite set of
     elements.  A more interesting way of defining a type is to give a
     collection of _inductive rules_ describing its elements.  For
     example, we can define (a unary representation of) the natural
     numbers as follows: *)
 
-Inductive nat : Type :=
+  Inductive nat : Type :=
   | O : nat
   | S : nat -> nat.
 
-(** The clauses of this definition can be read:
+  (** The clauses of this definition can be read:
       - [O] is a natural number (note that this is the letter "[O],"
         not the numeral "[0]").
       - [S] is a "constructor" that takes a natural number and yields
         another one -- that is, if [n] is a natural number, then [S n]
         is too. *)
 
-(** Let's look at this in a little more detail.
+  (** Let's look at this in a little more detail.
 
     Every inductively defined set ([day], [nat], [bool], etc.) is
     actually a set of _expressions_ built from _constructors_
@@ -358,7 +357,7 @@ Inductive nat : Type :=
     - expressions formed in these two ways are the only ones belonging
       to the set [nat]. *)
 
-(** The same rules apply for our definitions of [day] and
+  (** The same rules apply for our definitions of [day] and
     [bool]. (The annotations we used for their constructors are
     analogous to the one for the [O] constructor, indicating that they
     don't take any arguments.)
@@ -379,23 +378,23 @@ Inductive nat : Type :=
     [O]).  If we like, we can write essentially the same definition
     this way: *)
 
-Inductive nat' : Type :=
+  Inductive nat' : Type :=
   | stop : nat'
   | tick : nat' -> nat'.
 
-(** The _interpretation_ of these marks comes from how we use them to
+  (** The _interpretation_ of these marks comes from how we use them to
     compute. *)
 
-(** We can do this by writing functions that pattern match on
+  (** We can do this by writing functions that pattern match on
     representations of natural numbers just as we did above with
     booleans and days -- for example, here is the predecessor
     function: *)
 
-Definition pred (n : nat) : nat :=
-  match n with
+  Definition pred (n : nat) : nat :=
+    match n with
     | O => O
     | S n' => n'
-  end.
+    end.
 
 (** The second branch can be read: "if [n] has the form [S n']
     for some [n'], then return [n']."  *)
@@ -404,9 +403,9 @@ End NatPlayground.
 
 Definition minustwo (n : nat) : nat :=
   match n with
-    | O => O
-    | S O => O
-    | S (S n') => n'
+  | O => O
+  | S O => O
+  | S (S n') => n'
   end.
 
 (** Because natural numbers are such a pervasive form of data,
@@ -416,9 +415,9 @@ Definition minustwo (n : nat) : nat :=
     prints numbers in arabic form by default: *)
 
 Check (S (S (S (S O)))).
-  (* ===> 4 : nat *)
+(* ===> 4 : nat *)
 Compute (minustwo 4).
-  (* ===> 2 : nat *)
+(* ===> 2 : nat *)
 
 (** The constructor [S] has the type [nat -> nat], just like the
     functions [minustwo] and [pred]: *)
@@ -473,20 +472,20 @@ Proof. simpl. reflexivity.  Qed.
 
 Module NatPlayground2.
 
-Fixpoint plus (n : nat) (m : nat) : nat :=
-  match n with
+  Fixpoint plus (n : nat) (m : nat) : nat :=
+    match n with
     | O => m
     | S n' => S (plus n' m)
-  end.
+    end.
 
-(** Adding three to two now gives us five, as we'd expect. *)
+  (** Adding three to two now gives us five, as we'd expect. *)
 
-Compute (plus 3 2).
+  Compute (plus 3 2).
 
-(** The simplification that Coq performs to reach this conclusion can
+  (** The simplification that Coq performs to reach this conclusion can
     be visualized as follows: *)
 
-(*  [plus (S (S (S O))) (S (S O))]
+  (*  [plus (S (S (S O))) (S (S O))]
 ==> [S (plus (S (S O)) (S (S O)))]
       by the second clause of the [match]
 ==> [S (S (plus (S O) (S (S O))))]
@@ -495,31 +494,31 @@ Compute (plus 3 2).
       by the second clause of the [match]
 ==> [S (S (S (S (S O))))]
       by the first clause of the [match]
-*)
+   *)
 
-(** As a notational convenience, if two or more arguments have
+  (** As a notational convenience, if two or more arguments have
     the same type, they can be written together.  In the following
     definition, [(n m : nat)] means just the same as if we had written
     [(n : nat) (m : nat)]. *)
 
-Fixpoint mult (n m : nat) : nat :=
-  match n with
+  Fixpoint mult (n m : nat) : nat :=
+    match n with
     | O => O
     | S n' => plus m (mult n' m)
-  end.
+    end.
 
-Example test_mult1: (mult 3 3) = 9.
-Proof. simpl. reflexivity.  Qed.
+  Example test_mult1: (mult 3 3) = 9.
+  Proof. simpl. reflexivity.  Qed.
 
-(** You can match two expressions at once by putting a comma
+  (** You can match two expressions at once by putting a comma
     between them: *)
 
-Fixpoint minus (n m:nat) : nat :=
-  match n, m with
-  | O   , _    => O
-  | S _ , O    => n
-  | S n', S m' => minus n' m'
-  end.
+  Fixpoint minus (n m:nat) : nat :=
+    match n, m with
+    | O   , _    => O
+    | S _ , O    => n
+    | S n', S m' => minus n' m'
+    end.
 
 (** The _ in the first line is a _wildcard pattern_.  Writing _ in a
     pattern is the same as writing some variable that doesn't get used
@@ -530,8 +529,8 @@ End NatPlayground2.
 
 Fixpoint exp (base power : nat) : nat :=
   match power with
-    | O => S O
-    | S p => mult base (exp base p)
+  | O => S O
+  | S p => mult base (exp base p)
   end.
 
 (** **** Exercise: 1 star (factorial)  *)
@@ -560,14 +559,14 @@ Proof. simpl. reflexivity.  Qed.
     subtraction. *)
 
 Notation "x + y" := (plus x y)
-                       (at level 50, left associativity)
-                       : nat_scope.
+                      (at level 50, left associativity)
+                    : nat_scope.
 Notation "x - y" := (minus x y)
-                       (at level 50, left associativity)
-                       : nat_scope.
+                      (at level 50, left associativity)
+                    : nat_scope.
 Notation "x * y" := (mult x y)
-                       (at level 40, left associativity)
-                       : nat_scope.
+                      (at level 40, left associativity)
+                    : nat_scope.
 
 Check ((0 + 1) + 1).
 
@@ -608,10 +607,10 @@ Fixpoint leb (n m : nat) : bool :=
   match n with
   | O => true
   | S n' =>
-      match m with
-      | O => false
-      | S m' => leb n' m'
-      end
+    match m with
+    | O => false
+    | S m' => leb n' m'
+    end
   end.
 
 Example test_leb1:             (leb 2 2) = true.
@@ -756,8 +755,8 @@ Abort.
     seen: *)
 
 Theorem plus_id_example : forall n m:nat,
-  n = m ->
-  n + n = m + m.
+    n = m ->
+    n + n = m + m.
 
 (** Instead of making a universal claim about all numbers [n] and [m],
     it talks about a more specialized property that only holds when [n
@@ -801,7 +800,7 @@ Proof.
 (** Remove "[Admitted.]" and fill in the proof. *)
 
 Theorem plus_id_exercise : forall n m o : nat,
-  n = m -> m = o -> n + m = m + o.
+    n = m -> m = o -> n + m = m + o.
 Proof.
   intros n m o H.
   intros H1.
@@ -829,7 +828,7 @@ Qed.
     by matching with the current goal. *)
 
 Theorem mult_0_plus : forall n m : nat,
-  (0 + n) * m = n * m.
+    (0 + n) * m = n * m.
 Proof.
   intros n m.
   rewrite -> plus_O_n.
@@ -837,8 +836,8 @@ Proof.
 
 (** **** Exercise: 2 stars (mult_S_1)  *)
 Theorem mult_S_1 : forall n m : nat,
-  m = S n ->
-  m * (1 + n) = m * m.
+    m = S n ->
+    m * (1 + n) = m * m.
 Proof.
   intros n m H.
   rewrite ->  plus_1_l.
@@ -858,7 +857,7 @@ Proof.
     fact using the [simpl] tactic as above, we get stuck. *)
 
 Theorem plus_1_neq_0_firsttry : forall n : nat,
-  beq_nat (n + 1) 0 = false.
+    beq_nat (n + 1) 0 = false.
 Proof.
   intros n.
   simpl.  (* does nothing! *)
@@ -882,7 +881,7 @@ Abort.
     [n = O] and where [n = S n'] is called [destruct]. *)
 
 Theorem plus_1_neq_0 : forall n : nat,
-  beq_nat (n + 1) 0 = false.
+    beq_nat (n + 1) 0 = false.
 Proof.
   intros n. destruct n as [| n'].
   - reflexivity.
@@ -940,7 +939,7 @@ Proof.
     inverse. *)
 
 Theorem negb_involutive : forall b : bool,
-  negb (negb b) = b.
+    negb (negb b) = b.
 Proof.
   intros b. destruct b.
   - reflexivity.
@@ -1028,7 +1027,7 @@ Qed.
     here is a shorter proof of the [plus_1_neq_0] theorem above. *)
 
 Theorem plus_1_neq_0' : forall n : nat,
-  beq_nat (n + 1) 0 = false.
+    beq_nat (n + 1) 0 = false.
 Proof.
   intros [|n'].
   - reflexivity.
@@ -1063,7 +1062,7 @@ Proof.
 Qed.
 
 Theorem andb_true_elim2 : forall b c : bool,
-  andb b c = true -> c = true.
+    andb b c = true -> c = true.
 Proof.
   intros.
   destruct b.
@@ -1076,7 +1075,7 @@ Qed.
 
 (** **** Exercise: 1 star (zero_nbeq_plus_1)  *)
 Theorem zero_nbeq_plus_1 : forall n : nat,
-  beq_nat 0 (n + 1) = false.
+    beq_nat 0 (n + 1) = false.
 Proof.
   intros [|n'].
   - reflexivity.
@@ -1095,11 +1094,11 @@ Qed.
     Recall the notation definitions for infix plus and times: *)
 
 Notation "x + y" := (plus x y)
-                       (at level 50, left associativity)
-                       : nat_scope.
+                      (at level 50, left associativity)
+                    : nat_scope.
 Notation "x * y" := (mult x y)
-                       (at level 40, left associativity)
-                       : nat_scope.
+                      (at level 40, left associativity)
+                    : nat_scope.
 
 (** For each notation symbol in Coq, we can specify its _precedence
     level_ and its _associativity_.  The precedence level [n] is
@@ -1167,7 +1166,7 @@ Fixpoint sum_of_n (n : nat) : nat :=
     0 => 0
   | S p => S p + sum_of_n (pred n)
   end.
-*)
+ *)
 (** [] *)
 
 (* ################################################################# *)
@@ -1179,8 +1178,8 @@ Fixpoint sum_of_n (n : nat) : nat :=
 
 Theorem identity_fn_applied_twice :
   forall (f : bool -> bool),
-  (forall (x : bool), f x = x) ->
-  forall (b : bool), f (f b) = b.
+    (forall (x : bool), f x = x) ->
+    forall (b : bool), f (f b) = b.
 Proof.
   intros.
   rewrite -> H.
@@ -1194,8 +1193,8 @@ Qed.
 
 Theorem negation_fn_applied_twice :
   forall (f : bool -> bool),
-  (forall (x : bool), f x = negb x) ->
-  forall (b : bool), f (f b) = b.
+    (forall (x : bool), f x = negb x) ->
+    forall (b : bool), f (f b) = b.
 Proof.
   intros.
   rewrite -> H.
@@ -1214,8 +1213,8 @@ Qed.
 
 Theorem andb_eq_orb :
   forall (b c : bool),
-  (andb b c = orb b c) ->
-  b = c.
+    (andb b c = orb b c) ->
+    b = c.
 Proof.
   intros [] [].
   - reflexivity.
