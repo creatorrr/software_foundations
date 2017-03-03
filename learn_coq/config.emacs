@@ -79,6 +79,12 @@
 (use-package evil
   :ensure t)                    ;; evil-mode
 
+(use-package request
+  :ensure t)                    ;; http helper library
+
+(use-package try
+  :ensure t)                    ;; to try out emacs packages temporarily
+
 (use-package key-chord
   :ensure t)                    ;; key-chord - library for mangaging kbd bindings
 
@@ -233,8 +239,19 @@
   (add-hook 'prog-mode-hook 'nlinum-relative-mode))
 
 (use-package powerline
+  :ensure t)
+
+(use-package powerline-evil
   :ensure t
-  :config (powerline-vim-theme))
+  :config (powerline-evil-vim-color-theme))
+
+(use-package vimish-fold
+  :ensure t
+  :config
+  (vimish-fold-global-mode 1)
+  (define-key evil-normal-state-map (kbd "SPC") 'vimish-fold-toggle)
+  (define-key evil-normal-state-map (kbd "S-SPC") 'vimish-fold-toggle-all))
+
 
 (use-package smex
   :ensure t
@@ -246,6 +263,10 @@
          )
   )
 
+(use-package org-bullets
+  :ensure t
+  :init (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
 ;; Evil mode
 ;; ----------
 
@@ -256,7 +277,7 @@
 ;; Key bindings
 (define-key evil-normal-state-map (kbd ";") 'evil-ex)
 
-(setq key-chord-two-keys-delay 1.0)
+(setq key-chord-two-keys-delay 1.3)
 (key-chord-define evil-insert-state-map (kbd "jj") 'evil-normal-state)
 
 (key-chord-mode t)
