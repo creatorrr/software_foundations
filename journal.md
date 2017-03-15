@@ -116,3 +116,8 @@ Note to self: Ask prof if there is a better solution to this and also if there i
 
 2017-03-15 09:44 Finished Induction exercises.
 Getting much more comfortable with Coq theorem proving now. The last bits of Induction were challenging but I didn't have to struggle too much. (Note: this post is a week later than it should be owing to some misfortune)
+
+2017-03-15 10:19 The Story of last week.
+Due to some very gross miscommunications, I got myself landed in a psych ward for all of last week. As one can expect, it caused a lot of disruption in my work. While they did have computers, (to my horror) they only ran windows with limited privileges and extremely limited internet access (no github) but I was able to get some work done despite through [ProofWeb](http://proofweb.cs.ru.nl/) and Wordpad... ...
+
+Anyway that's the work I just committed, should be able to finish Lists.v by end of today. `rev_injective` was a lot of fun to crack and I spent hours stuck on it.
