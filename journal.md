@@ -113,3 +113,6 @@ Like the distributive property of mult has been bugging me for hours...
 2017-03-02 11:10 Phew!
 Finally solved the mult_plus_distr_r proof. Took me triple induction, three previous proofs, two sub-proofs and half a bottle of tylenol.
 Note to self: Ask prof if there is a better solution to this and also if there is a tactic to do multiple repeated steps automatically.
+
+2017-03-15 09:44 Finished Induction exercises.
+Getting much more comfortable with Coq theorem proving now. The last bits of Induction were challenging but I didn't have to struggle too much. (Note: this post is a week later than it should be owing to some misfortune)
