@@ -33,7 +33,7 @@ Require Export Basics.
     also a neutral element on the _right_... *)
 
 Theorem plus_n_O_firsttry : forall n:nat,
-  n = n + 0.
+    n = n + 0.
 
 (** ... can't be done in the same simple way.  Just applying
   [reflexivity] doesn't work, since the [n] in [n + 0] is an arbitrary
@@ -51,7 +51,7 @@ Abort.
     get stuck in exactly the same way. *)
 
 Theorem plus_n_O_secondtry : forall n:nat,
-  n = n + 0.
+    n = n + 0.
 Proof.
   intros n. destruct n as [| n'].
   - (* n = 0 *)
@@ -109,7 +109,7 @@ Proof.
     [S (n' + 0) = S n'], which in turn follows from [IHn']. *)
 
 Theorem minus_diag : forall n,
-  minus n n = 0.
+    minus n n = 0.
 Proof.
   (* WORKED IN CLASS *)
   intros n. induction n as [| n' IHn'].
@@ -128,7 +128,7 @@ Proof.
     proven results. *)
 
 Theorem mult_0_r : forall n:nat,
-  n * 0 = 0.
+    n * 0 = 0.
 Proof.
   intros n. induction n as [| n' IHn'].
   - reflexivity.
@@ -136,7 +136,7 @@ Proof.
 Qed.
 
 Theorem plus_n_Sm : forall n m : nat,
-  S (n + m) = n + (S m).
+    S (n + m) = n + (S m).
 Proof.
   intros n m. induction n as [|n' IHn'].
   - rewrite -> plus_O_n. rewrite -> plus_O_n. reflexivity.
@@ -144,7 +144,7 @@ Proof.
 Qed.
 
 Theorem plus_comm : forall n m : nat,
-  n + m = m + n.
+    n + m = m + n.
 Proof.
   intros n m. induction n as [|n' IHn'].
   - rewrite <-  plus_n_O. reflexivity.
@@ -152,7 +152,7 @@ Proof.
 Qed.
 
 Theorem plus_assoc : forall n m p : nat,
-  n + (m + p) = (n + m) + p.
+    n + (m + p) = (n + m) + p.
 Proof.
   intros n m p. simpl. induction n as [|n' IHn'].
   - reflexivity.
@@ -190,7 +190,7 @@ Qed.
     with induction: *)
 
 Theorem evenb_S : forall n : nat,
-  evenb (S n) = negb (evenb n).
+    evenb (S n) = negb (evenb n).
 Proof.
   intros n. simpl. induction n as [|n' IHn'].
   - reflexivity.
@@ -203,7 +203,7 @@ Qed.
 (** Briefly explain the difference between the tactics [destruct]
     and [induction].
 
-(*
+ (*
 `destruct` tactic takes a variable and splits the current goal into n subgoals each
 corresponding to one of the data constructors of that value. This allows us to
 consider and prove the original lemma on a case by case basis which is sometimes
@@ -215,7 +215,7 @@ splits the curret goal into a base case and a step case with an added hypothesis
 the previous step. If a proof follows from these two conditions then it is true for
 all values that the variable can take. e.g. for `nat` type.
  *)
-*)
+ *)
 (** [] *)
 
 (* ################################################################# *)
@@ -234,11 +234,11 @@ all values that the variable can take. e.g. for `nat` type.
     prove [plus_O_n] in-line: *)
 
 Theorem mult_0_plus' : forall n m : nat,
-  (0 + n) * m = n * m.
+    (0 + n) * m = n * m.
 Proof.
   intros n m.
   assert (H: 0 + n = n). { reflexivity. }
-  rewrite -> H.
+                         rewrite -> H.
   reflexivity.  Qed.
 
 (** The [assert] tactic introduces two sub-goals.  The first is
@@ -269,7 +269,7 @@ Proof.
     only the _outer_ one... *)
 
 Theorem plus_rearrange_firsttry : forall n m p q : nat,
-  (n + m) + (p + q) = (m + n) + (p + q).
+    (n + m) + (p + q) = (m + n) + (p + q).
 Proof.
   intros n m p q.
   (* We just need to swap (n + m) for (m + n)... seems
@@ -284,7 +284,7 @@ Abort.
     [plus_comm], and then use it to do the desired rewrite. *)
 
 Theorem plus_rearrange : forall n m p q : nat,
-  (n + m) + (p + q) = (m + n) + (p + q).
+    (n + m) + (p + q) = (m + n) + (p + q).
 Proof.
   intros n m p q.
   assert (H: n + m = m + n).
@@ -345,16 +345,16 @@ Proof.
 (** For example, here is a proof that addition is associative: *)
 
 Theorem plus_assoc' : forall n m p : nat,
-  n + (m + p) = (n + m) + p.
+    n + (m + p) = (n + m) + p.
 Proof. intros n m p. induction n as [| n' IHn']. reflexivity.
-  simpl. rewrite -> IHn'. reflexivity.  Qed.
+       simpl. rewrite -> IHn'. reflexivity.  Qed.
 
 (** Coq is perfectly happy with this.  For a human, however, it
     is difficult to make much sense of it.  We can use comments and
     bullets to show the structure a little more clearly... *)
 
 Theorem plus_assoc'' : forall n m p : nat,
-  n + (m + p) = (n + m) + p.
+    n + (m + p) = (n + m) + p.
 Proof.
   intros n m p. induction n as [| n' IHn'].
   - (* n = 0 *)
@@ -414,8 +414,8 @@ Proof.
     Theorem: Addition is commutative.
 
     Proof: (* FILL IN HERE *)
-    (* Omitting. *)
-*)
+ (* Omitting. *)
+ *)
 (** [] *)
 
 (** **** Exercise: 2 stars, optionalM (beq_nat_refl_informal)  *)
@@ -437,7 +437,7 @@ Proof.
     use induction on [plus_swap]. *)
 
 Theorem plus_swap : forall n m p : nat,
-  n + (m + p) = m + (n + p).
+    n + (m + p) = m + (n + p).
 Proof.
   intros n m p.
   induction n as [|n' IHn'].
@@ -452,7 +452,7 @@ Qed.
     handy.) *)
 
 Theorem mult_comm : forall m n : nat,
-  m * n = n * m.
+    m * n = n * m.
 Proof.
   intros m n. induction n as [|n' IHn'].
   - rewrite -> mult_0_r. reflexivity.
@@ -473,7 +473,7 @@ Qed.
     reflect before you hack!) *)
 
 Theorem leb_refl : forall n:nat,
-  true = leb n n.
+    true = leb n n.
 Proof.
   (* Guess: induction (maybe destruct too) *)
   intros n. induction n as [|n' IHn'].
@@ -482,7 +482,7 @@ Proof.
 Qed.
 
 Theorem zero_nbeq_S : forall n:nat,
-  beq_nat 0 (S n) = false.
+    beq_nat 0 (S n) = false.
 Proof.
   (* Guess: induction *)
   intros n. destruct n as [|n'].
@@ -491,7 +491,7 @@ Proof.
 Qed.
 
 Theorem andb_false_r : forall b : bool,
-  andb b false = false.
+    andb b false = false.
 Proof.
   (* Guess: destruct *)
   intros b. destruct b as [].
@@ -500,7 +500,7 @@ Proof.
 Qed.
 
 Theorem plus_ble_compat_l : forall n m p : nat,
-  leb n m = true -> leb (p + n) (p + m) = true.
+    leb n m = true -> leb (p + n) (p + m) = true.
 Proof.
   (* Guess: destruct *)
   intros n m p H. induction p as [|p' IHp'].
@@ -509,7 +509,7 @@ Proof.
 Qed.
 
 Theorem S_nbeq_0 : forall n:nat,
-  beq_nat (S n) 0 = false.
+    beq_nat (S n) 0 = false.
 Proof.
   (* Guess: destruct *)
   intros n. destruct n as [|n'].
@@ -529,8 +529,8 @@ Theorem all3_spec : forall b c : bool,
     orb
       (andb b c)
       (orb (negb b)
-               (negb c))
-  = true.
+           (negb c))
+    = true.
 Proof.
   (* Guess: rewrite & sub-proof *)
   intros b c.
@@ -552,7 +552,7 @@ Proof.
 Qed.
 
 Theorem mult_plus_distr_r : forall n m p : nat,
-  (n + m) * p = (n * p) + (m * p).
+    (n + m) * p = (n * p) + (m * p).
 Proof.
   (* Guess: induction *)
   intros n m p. induction p as [|p' IHp'].
@@ -573,7 +573,7 @@ Proof.
 Qed.
 
 Theorem mult_assoc : forall n m p : nat,
-  n * (m * p) = (n * m) * p.
+    n * (m * p) = (n * m) * p.
 Proof.
   (* Guess: destruct *)
   intros n m p. induction n as [|n' IHn'].
@@ -591,7 +591,7 @@ Qed.
     using the theorem no matter which way we state it.) *)
 
 Theorem beq_nat_refl : forall n : nat,
-  true = beq_nat n n.
+    true = beq_nat n n.
 Proof.
   (* Guess: induction *)
   intros n. induction n as [|n' IHn'].
@@ -611,7 +611,7 @@ Qed.
    [plus_swap] but without needing [assert (n + m = m + n)]. *)
 
 Theorem plus_swap' : forall n m p : nat,
-  n + (m + p) = m + (n + p).
+    n + (m + p) = m + (n + p).
 Proof.
   intros [] m p.
   - reflexivity.
@@ -691,12 +691,22 @@ Fixpoint nat_to_bin (n :nat) : bin :=
 
 Eval compute in (bin_to_nat (nat_to_bin 1357)).
 
-Theorem bin_to_nat_nat_to_bin_ident : forall (n : nat), bin_to_nat (nat_to_bin n) = n.
+Theorem nat_to_bin_bin_to_nat_ident : forall (n : nat), bin_to_nat (nat_to_bin n) = n.
   intros n. induction n as [|n' IHn'].
   - reflexivity.
   - simpl. rewrite -> bin_to_nat_pres_incr.
     rewrite -> IHn'. reflexivity.
 Qed.
+
+(*
+While nat->bin->nat is preserved, the reverse is not necessarily so mainly
+because while nat only has 1 incrementing constructor `S` bin has two `D` and `D1`
+and so more than one bin values can correspond to the same nat value. e.g.
+ *)
+
+Eval compute in beq_nat (bin_to_nat (D1 (D1 (D1 b0)))) (bin_to_nat (D1 (D1 (D1 (D (D (D b0))))))).
+
+Axiom D_b0_b0 : D b0 = b0.
 
 Fixpoint normalize (b : bin) : bin :=
   match b with
@@ -709,6 +719,35 @@ Fixpoint normalize (b : bin) : bin :=
 
 Eval compute in normalize (incr (incr (incr b0))).
 Eval compute in normalize (incr (incr (incr (D (D (D b0)))))).
+
+Theorem D_normalize_swap : forall (b : bin), D (normalize b) = normalize (D b).
+Proof.
+  intros b. induction b as [|b' IHb' |b'' IHb''].
+  - simpl. apply D_b0_b0.
+  - rewrite <- IHb'. inversion IHb'.
+    simpl. rewrite <- H0. reflexivity.
+  - reflexivity.
+Qed.
+
+Theorem bin_to_nat_nat_to_bin_normalize_ident : forall (b : bin), nat_to_bin (bin_to_nat b) = normalize b.
+Proof.
+  intros b.
+  assert (D_nat_to_bin : forall (n : nat), nat_to_bin (n + n) = D (nat_to_bin n)). {
+    intros n. induction n.
+    + simpl. rewrite -> D_b0_b0. reflexivity.
+    + rewrite <- plus_n_Sm. simpl.
+      rewrite -> IHn. simpl. reflexivity.
+  }
+  induction b as [|b' IHb' |b'' IHb''].
+  - reflexivity.
+  - rewrite <- D_normalize_swap.
+    simpl. rewrite <- plus_n_O.
+    rewrite -> D_nat_to_bin.
+    rewrite -> IHb'. reflexivity.
+  - simpl. rewrite <- plus_n_O. rewrite -> D_nat_to_bin.
+    rewrite -> IHb''. reflexivity.
+Qed.
+
 (** [] *)
 
 (** $Date: 2016-10-07 14:01:19 -0400 (Fri, 07 Oct 2016) $ *)
