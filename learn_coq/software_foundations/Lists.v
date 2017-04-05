@@ -1113,17 +1113,17 @@ Module NatList.
   (** Using the same idea, fix the [hd] function from earlier so we don't
     have to pass a default element for the [nil] case.  *)
 
-  Definition hd_error (l : natlist) : natoption
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  Definition hd_error (l : natlist) : natoption := nth_error l 0.
+
 
   Example test_hd_error1 : hd_error [] = None.
-  (* FILL IN HERE *) Admitted.
+  reflexivity. Qed.
 
   Example test_hd_error2 : hd_error [1] = Some 1.
-  (* FILL IN HERE *) Admitted.
+  reflexivity. Qed.
 
   Example test_hd_error3 : hd_error [5;6] = Some 5.
-  (* FILL IN HERE *) Admitted.
+  reflexivity. Qed.
   (** [] *)
 
   (** **** Exercise: 1 star, optional (option_elim_hd)  *)
@@ -1132,7 +1132,10 @@ Module NatList.
   Theorem option_elim_hd : forall (l:natlist) (default:nat),
       hd default l = option_elim default (hd_error l).
   Proof.
-  (* FILL IN HERE *) Admitted.
+    intros [|n tail] d.
+    - simpl. reflexivity.
+    - simpl. reflexivity.
+  Qed.
   (** [] *)
 
 End NatList.
@@ -1166,7 +1169,11 @@ Definition beq_id (x1 x2 : id) :=
 (** **** Exercise: 1 star (beq_id_refl)  *)
 Theorem beq_id_refl : forall x, true = beq_id x x.
 Proof.
-(* FILL IN HERE *) Admitted.
+  intros [].
+  - destruct n as [|n'].
+    + simpl. reflexivity.
+    + simpl. rewrite <- beq_nat_refl. reflexivity.
+Qed.
 (** [] *)
 
 (** Now we define the type of partial maps: *)
@@ -1209,11 +1216,31 @@ Module PartialMap.
 
 
   (** **** Exercise: 1 star (update_eq)  *)
+  Theorem update_record_empty :
+    forall (x : id) (v : nat),
+      update empty x v = record x v empty.
+  Proof.
+    intros. simpl. reflexivity.
+  Qed.
+
+  Theorem update_record_eq :
+    forall (d : partial_map) (x : id) (v : nat),
+      update d x v = record x v d.
+  Proof.
+    intros [|x' v' d'] x v.
+     - simpl. reflexivity.
+     - simpl. reflexivity.
+  Qed.
+
   Theorem update_eq :
     forall (d : partial_map) (x : id) (v: nat),
       find x (update d x v) = Some v.
   Proof.
-  (* FILL IN HERE *) Admitted.
+    intros [|x' v' d'] x v.
+    - rewrite -> update_record_empty.
+      simpl. rewrite <- beq_id_refl. reflexivity.
+    - simpl. rewrite <- beq_id_refl. reflexivity.
+  Qed.
   (** [] *)
 
   (** **** Exercise: 1 star (update_neq)  *)
@@ -1221,7 +1248,12 @@ Module PartialMap.
     forall (d : partial_map) (x y : id) (o: nat),
       beq_id x y = false -> find x (update d y o) = find x d.
   Proof.
-  (* FILL IN HERE *) Admitted.
+    intros [|x' v' d'] x y o H.
+    - rewrite -> update_record_empty.
+      simpl. rewrite -> H. reflexivity.
+    - rewrite -> update_record_eq.
+      simpl. rewrite -> H. reflexivity.
+  Qed.
   (** [] *)
 End PartialMap.
 
