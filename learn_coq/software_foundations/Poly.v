@@ -1105,6 +1105,37 @@ Proof. simpl. reflexivity. Qed.
 Example succ_3 : succ two = three.
 Proof. simpl. reflexivity. Qed.
 
+(** decc *)
+Definition nat_to_listM (X : Type) (n : nat) : (X -> X) -> list (X -> X) :=
+  fun (f : X -> X) => n _ (cons f) [].
+
+Definition listM_to_nat (X : Type) (lm : (X -> X) -> list (X -> X)) : nat :=
+  fold (fun _ m => succ m) (lm (fun x => x)) zero.
+
+Example listM_nat : forall (X : Type), listM_to_nat X (nat_to_listM X one) = one.
+Proof. simpl. reflexivity. Qed.
+
+Definition tl {X : Type} (l:list X) : (list X) :=
+  match l with
+  | nil => nil
+  | cons h t => t
+    end.
+
+Definition tl_f {X : Type} (l:list (X -> X)) : (list (X -> X)) :=
+  match l with
+  | nil => nil
+  | cons h t => t
+    end.
+
+Definition decc (X : Type) (n : nat) : nat :=
+    listM_to_nat _ (fun f => tl_f (nat_to_listM X n (fun x => x))).
+
+Example decc_1 : forall (X : Type), decc X one = zero.
+Proof. simpl. reflexivity. Qed.
+
+Example decc_2 : forall (X : Type), decc X two = one.
+Proof. simpl. reflexivity. Qed.
+
 (** Addition of two natural numbers: *)
 
 Definition plus (n m : nat) : nat :=
@@ -1120,10 +1151,11 @@ Example plus_3 :
   plus (plus two two) three = plus one (plus three three).
 Proof. simpl. reflexivity. Qed.
 
+
 (** Multiplication: *)
 
 Definition mult (n m : nat) : nat :=
-  fun (X : Type) (f : X -> X) (x : X) => n _ (m _ f) x.
+  fun (X : Type) (f : X -> X) => n _ (m _ f).
 
 Example mult_1 : mult one one = one.
 Proof. simpl. reflexivity. Qed.
@@ -1141,8 +1173,9 @@ Proof. simpl. reflexivity. Qed.
     a "Universe inconsistency" error, try iterating over a different
     type: [nat] itself is usually problematic.) *)
 
-Definition exp (n m : nat) : nat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Definition exp (n m : nat) : nat :=
+  fun (X : Type) (f : X -> X) =>
+    fold (fun f' _ => n _ f' ) (m _ (cons (n _ f)) []) f.
 
 Example exp_1 : exp two two = plus two two.
 Proof. simpl. reflexivity. Qed.
